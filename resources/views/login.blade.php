@@ -39,9 +39,9 @@
 				</a>
 			</div>
 			<div class="login-menu">
-				<ul>
+				{{-- <ul>
 					<li><a href="register.html">Register</a></li>
-				</ul>
+				</ul> --}}
 			</div>
 		</div>
 	</div>
@@ -56,8 +56,9 @@
 						<div class="login-title">
 							<h2 class="text-center text-primary">Login To DeskApp</h2>
 						</div>
-						<form>
-							<div class="select-role">
+						<form method="POST" action="{{ route('login') }}">
+                            @csrf
+							{{-- <div class="select-role">
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
 									<label class="btn active">
 										<input type="radio" name="options" id="admin">
@@ -72,15 +73,15 @@
 										Employee
 									</label>
 								</div>
-							</div>
+							</div> --}}
 							<div class="input-group custom">
-								<input type="text" class="form-control form-control-lg" placeholder="Username">
+								<input type="text" class="form-control form-control-lg" placeholder="email" name="email">
 								<div class="input-group-append custom">
 									<span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
 								</div>
 							</div>
 							<div class="input-group custom">
-								<input type="password" class="form-control form-control-lg" placeholder="**********">
+								<input type="password" class="form-control form-control-lg" placeholder="**********" name="password">
 								<div class="input-group-append custom">
 									<span class="input-group-text"><i class="dw dw-padlock1"></i></span>
 								</div>
@@ -103,12 +104,15 @@
 											use code for form submit
 											<input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
 										-->
-										<a class="btn btn-primary btn-lg btn-block" href="index.html">Sign In</a>
+										{{-- <a class="btn btn-primary btn-lg btn-block" href="index.html">Sign In</a> --}}
+                                        <x-button class="btn btn-primary btn-lg btn-block">
+                                            {{ __('Log in') }}
+                                        </x-button>
 									</div>
-									<div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">OR</div>
+									{{-- <div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">OR</div>
 									<div class="input-group mb-0">
 										<a class="btn btn-outline-primary btn-lg btn-block" href="register.html">Register To Create Account</a>
-									</div>
+									</div> --}}
 								</div>
 							</div>
 						</form>
