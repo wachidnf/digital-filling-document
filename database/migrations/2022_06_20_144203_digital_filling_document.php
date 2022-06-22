@@ -16,12 +16,12 @@ class DigitalFillingDocument extends Migration
         //
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
+            $table->string('username')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('project_id');
-            $table->integer('department_id');
+            $table->integer('project_id')->nullable();
+            $table->integer('department_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
