@@ -30,7 +30,7 @@
 		gtag('config', 'UA-119386393-1');
 	</script>
 </head>
-<div class="pre-loader">
+{{-- <div class="pre-loader">
     <div class="pre-loader-box">
         <div class="loader-logo"><img src="vendors/images/deskapp-logo.svg" alt=""></div>
         <div class='loader-progress' id="progress_div">
@@ -41,7 +41,7 @@
             Loading...
         </div>
     </div>
-</div>
+</div> --}}
 <div class="header">
     <div class="header-left">
         <div class="menu-icon dw dw-menu"></div>
