@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/dashboard';
+    protected $namespace = 'App\Http\Controllers'; // need to add in Laravel 8
 
     /**
      * The controller namespace for the application.
@@ -33,6 +34,22 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
+    // public function boot()
+    // {
+    //     $this->configureRateLimiting();
+
+    //     $this->routes(function () {
+    //         Route::prefix('api')
+    //             ->middleware('api')
+    //             ->namespace($this->namespace)
+    //             ->group(base_path('routes/api.php'));
+
+    //         Route::middleware('web')
+    //             ->namespace($this->namespace)
+    //             ->group(base_path('routes/web.php'));
+    //     });
+    // }
+
     public function boot()
     {
         $this->configureRateLimiting();
@@ -40,11 +57,11 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::prefix('api')
                 ->middleware('api')
-                ->namespace($this->namespace)
+                ->namespace($this->namespace) // need to add in Laravel 8
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
-                ->namespace($this->namespace)
+                ->namespace($this->namespace) // need to add in Laravel 8
                 ->group(base_path('routes/web.php'));
         });
     }

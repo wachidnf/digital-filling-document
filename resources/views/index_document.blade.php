@@ -45,7 +45,7 @@
 					</div>
 					<div class="pb-20">
                         <div class="btn-list">
-                            <button class="btn btn-primary" type="button">ADD</button>
+                            <a class="btn btn-primary" type="button" href="create-document">ADD</a>
                             <button class="btn btn-primary" type="button">EDIT</button>
                             <button class="btn btn-primary" type="button">DELETE</button>
                             <button class="btn btn-primary" type="button">SYNCH</button>

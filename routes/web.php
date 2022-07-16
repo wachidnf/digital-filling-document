@@ -28,4 +28,9 @@ Route::get('/document', function () {
     return view('index_document');
 })->middleware(['auth'])->name('document');
 
+// Route::group(['middleware' => 'auth'], function()
+// {
+    Route::get('/create-document', 'Controller@createDocument')->name('create-document');
+// });
+
 require __DIR__.'/auth.php';
