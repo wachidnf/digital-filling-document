@@ -53,7 +53,7 @@
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Tanggal Proses</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="text" placeholder="Johnny Brown">
+								<input class="form-control" type="date" placeholder="">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -65,7 +65,7 @@
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">No Dokumen</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" value="bootstrap@example.com" type="email">
+								<input class="form-control" value="" type="email">
 							</div>
 						</div>
                         <div class="form-group row">
@@ -73,28 +73,28 @@
 							<div class="col-sm-12 col-md-10">
 								<select class="custom-select col-12">
 									<option selected="">Choose...</option>
-									<option value="1">One</option>
-									<option value="2">Two</option>
-									<option value="3">Three</option>
+									<option value="1">CD</option>
+									<option value="2">HCM</option>
+									<option value="3">CM</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Lokasi File</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" value="1-(111)-111-1111" type="tel">
+								<input class="form-control" value="" type="text">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" value="password" type="password">
+								<textarea class="form-control"></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Number</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" value="100" type="number">
+								<input class="form-control" value="" type="type">
 							</div>
 						</div>
 					</form>
