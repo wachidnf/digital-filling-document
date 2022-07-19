@@ -49,29 +49,30 @@
 							{{-- <a href="#basic-form1" class="btn btn-primary btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button"><i class="fa fa-code"></i> Source Code</a> --}}
 						</div>
 					</div>
-					<form>
+					<form  method="post" action="{{ route('save-document') }}" autocomplete="off" enctype="multipart/form-data">
+                        @csrf
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Tanggal Proses</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="date" placeholder="">
+								<input class="form-control" type="date" placeholder="" name="tgl_process">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Seq Nomor</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" placeholder="Search Here" type="search">
+								<input class="form-control" placeholder="" type="text" name="seq_nomor">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">No Dokumen</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" value="" type="email">
+								<input class="form-control" value="" type="text" name="no_dokumen">
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Department</label>
 							<div class="col-sm-12 col-md-10">
-								<select class="custom-select col-12">
+								<select class="custom-select col-12" name="department">
 									<option selected="">Choose...</option>
 									<option value="1">CD</option>
 									<option value="2">HCM</option>
@@ -82,21 +83,24 @@
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Lokasi File</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" value="" type="text">
+								<input class="form-control" value="" type="text" name="lokasi">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
 							<div class="col-sm-12 col-md-10">
-								<textarea class="form-control"></textarea>
+								<textarea class="form-control" name="keterangan"></textarea>
 							</div>
 						</div>
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Number</label>
 							<div class="col-sm-12 col-md-10">
 								<input class="form-control" value="" type="type">
 							</div>
-						</div>
+						</div> --}}
+                        <div>
+                            <button class="btn btn-primary" type="submit">Simpan</button>
+                        </div>
 					</form>
 				</div>
 			</div>

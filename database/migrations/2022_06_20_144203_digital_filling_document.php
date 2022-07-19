@@ -26,7 +26,7 @@ class DigitalFillingDocument extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('storage', function (Blueprint $table) {
+        Schema::create('storages', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->string('name');
@@ -34,12 +34,12 @@ class DigitalFillingDocument extends Migration
             $table->text('description');
             $table->timestamps();
             $table->softDeletes();
-            $table->integer('created_by');
-            $table->integer('updated_by');
-            $table->integer('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
-        Schema::create('document', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->dateTime('process_date');
             $table->string('seq_no');
@@ -49,26 +49,26 @@ class DigitalFillingDocument extends Migration
             $table->integer('storage_id');
             $table->timestamps();
             $table->softDeletes();
-            $table->integer('created_by');
-            $table->integer('updated_by');
-            $table->integer('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
-        Schema::create('detail_document', function (Blueprint $table) {
+        Schema::create('detail_documents', function (Blueprint $table) {
             $table->id();
             $table->integer('document_id');
             $table->string('reference_no');
             $table->string('name');
             $table->text('notes');
-            $table->integer('attachment_id');
+            $table->integer('attachment_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->integer('created_by');
-            $table->integer('updated_by');
-            $table->integer('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
-        Schema::create('attachment', function (Blueprint $table) {
+        Schema::create('attachments', function (Blueprint $table) {
             $table->id();
             $table->integer('detil_document_id');
             $table->string('type');
@@ -77,23 +77,23 @@ class DigitalFillingDocument extends Migration
             $table->text('description');
             $table->timestamps();
             $table->softDeletes();
-            $table->integer('created_by');
-            $table->integer('updated_by');
-            $table->integer('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
-        Schema::create('department', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
-            $table->integer('created_by');
-            $table->integer('updated_by');
-            $table->integer('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
-        Schema::create('session_login', function (Blueprint $table) {
+        Schema::create('session_logins', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
             $table->text('ip_address');
@@ -101,20 +101,20 @@ class DigitalFillingDocument extends Migration
             $table->string('is_logout');
             $table->timestamps();
             $table->softDeletes();
-            $table->integer('created_by');
-            $table->integer('updated_by');
-            $table->integer('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
-        Schema::create('project', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
-            $table->integer('created_by');
-            $table->integer('updated_by');
-            $table->integer('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
     }
@@ -128,13 +128,13 @@ class DigitalFillingDocument extends Migration
     {
         //
         Schema::dropIfExists('users');
-        Schema::dropIfExists('storage');
-        Schema::dropIfExists('document');
-        Schema::dropIfExists('detail_document');
-        Schema::dropIfExists('attachment');
-        Schema::dropIfExists('department');
-        Schema::dropIfExists('session_login');
-        Schema::dropIfExists('project');
+        Schema::dropIfExists('storages');
+        Schema::dropIfExists('documents');
+        Schema::dropIfExists('detail_documents');
+        Schema::dropIfExists('attachments');
+        Schema::dropIfExists('departments');
+        Schema::dropIfExists('session_logins');
+        Schema::dropIfExists('projects');
 
     }
 }

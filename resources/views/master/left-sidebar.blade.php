@@ -12,7 +12,7 @@
         <div class="sidebar-menu">
             <ul id="accordion-menu">
                 <li class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle">
+                    <a href="dashboard" class="dropdown-toggle no-arrow">
                         <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
                     </a>
                     {{-- <ul class="submenu">
@@ -27,6 +27,7 @@
                     </a>
                     <ul class="submenu">
                         <li><a href="document">Document</a></li>
+                        <li><a href="lokasi">Lokasi</a></li>
                     </ul>
                 </li>
                 {{-- <li class="dropdown">

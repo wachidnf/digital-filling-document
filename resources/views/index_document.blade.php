@@ -46,29 +46,53 @@
 					<div class="pb-20">
                         <div class="btn-list">
                             <a class="btn btn-primary" type="button" href="create-document">ADD</a>
-                            <button class="btn btn-primary" type="button">EDIT</button>
-                            <button class="btn btn-primary" type="button">DELETE</button>
-                            <button class="btn btn-primary" type="button">SYNCH</button>
-                            <button class="btn btn-primary" type="button">SEND</button>
+                            {{-- <button class="btn btn-primary" type="button">EDIT</button>
+                            <button class="btn btn-primary" type="button">DELETE</button> --}}
+                            {{-- <button class="btn btn-primary" type="button">SYNCH</button>
+                            <button class="btn btn-primary" type="button">SEND</button> --}}
                         </div>
-						<table class="checkbox-datatable table nowrap">
+						<table class="table nowrap">
 							<thead>
 								<tr>
                                     <th>No</th>
-									<th>
-                                        {{-- <div class="dt-checkbox">
+									{{-- <th>
+                                        <div class="dt-checkbox">
 											<input type="checkbox" name="select_all" value="1" id="example-select-all">
 											<span class="dt-checkbox-label"></span>
-										</div> --}}
-									</th>
+										</div>
+									</th> --}}
 									<th>Department</th>
 									<th>No. Dokumen</th>
 									<th>Seq Number</th>
 									<th>Tgl Proses</th>
 									<th>Keterangan</th>
+                                    <th>action</th>
 								</tr>
 							</thead>
 							<tbody>
+                                @foreach ($document as $key => $value)
+                                    <tr>
+                                        <td>{{$key+1}}</td>
+                                        {{-- <td><input type="checkbox" name="select_one" value="1" id="example-select-one"></td> --}}
+                                        <td>{{$value->department_id}}</td>
+                                        <td>{{$value->document_no}}</td>
+                                        <td>{{$value->seq_no}}</td>
+                                        <td>{{$value->process_date}}</td>
+                                        <td>{{$value->description}}</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                                    <i class="dw dw-more"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                                    <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a>
+                                                    {{-- <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a> --}}
+                                                    {{-- <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a> --}}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
 						</table>
 					</div>

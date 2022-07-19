@@ -24,13 +24,19 @@ Route::get('/dashboard', function () {
     return view('index3');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/document', function () {
-    return view('index_document');
-})->middleware(['auth'])->name('document');
+// Route::get('/document', function () {
+//     return view('index_document');
+// })->middleware(['auth'])->name('document');
 
 // Route::group(['middleware' => 'auth'], function()
 // {
-    Route::get('/create-document', 'Controller@createDocument')->name('create-document');
+    Route::get('/document', 'Controller@indexDocument')->middleware(['auth'])->name('document');
+    Route::get('/create-document', 'Controller@createDocument')->middleware(['auth'])->name('create-document');
+    Route::post('/save-document', 'Controller@saveDocument')->middleware(['auth'])->name('save-document');
+    Route::get('/view-document', 'Controller@viewDocument')->middleware(['auth'])->name('view-document');
+    Route::post('/save-detail-document', 'Controller@saveDetailDocument')->middleware(['auth'])->name('save-detail-document');
+
+    Route::get('/lokasi', 'Controller@indexLokasi')->middleware(['auth'])->name('lokasi');
 // });
 
 require __DIR__.'/auth.php';
