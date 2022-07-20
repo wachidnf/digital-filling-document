@@ -28,6 +28,7 @@
                     <ul class="submenu">
                         <li><a href="document">Document</a></li>
                         <li><a href="lokasi">Lokasi</a></li>
+                        <li><a href="department">Department</a></li>
                     </ul>
                 </li>
                 {{-- <li class="dropdown">

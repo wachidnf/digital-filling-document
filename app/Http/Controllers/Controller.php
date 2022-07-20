@@ -11,6 +11,7 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Models\Document;
 use App\Models\DetailDocument;
 use App\Models\Storage;
+use App\Models\Department;
 
 
 class Controller extends BaseController
@@ -73,7 +74,13 @@ class Controller extends BaseController
     public function indexLokasi(Request $request)
     {
         $lokasi = Storage::get();
-        return view('index_document',compact("lokasi"));
+        return view('index_lokasi',compact("lokasi"));
+    }
+
+    public function indexDepartment(Request $request)
+    {
+        $department = Department::get();
+        return view('index_department',compact("department"));
     }
 
 }
