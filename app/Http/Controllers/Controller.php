@@ -31,7 +31,9 @@ class Controller extends BaseController
     public function createDocument(Request $request)
     {
         // $document = Document::all();
-        return view('create_document');
+        $department = Department::get();
+        $lokasi = Storage::get();
+        return view('create_document',compact("department","lokasi"));
     }
 
     public function saveDocument(Request $request)
@@ -43,7 +45,7 @@ class Controller extends BaseController
         $document->document_no = $request->no_dokumen;
         $document->department_id = $request->department;
         $document->description = $request->keterangan;
-        $document->storage_id = 1;
+        $document->storage_id = $request->lokasi;
         $document->save();
 
         return redirect("/document");
@@ -53,8 +55,10 @@ class Controller extends BaseController
     {
         $document = Document::find($request->id);
         $detail_document = DetailDocument::where("document_id",$document->id)->get();
+        $department = Department::get();
+        $lokasi = Storage::get();
         // return $request;
-        return view('view_document',compact("document","detail_document"));
+        return view('view_document',compact("document","detail_document","department","lokasi"));
     }
 
     public function saveDetailDocument(Request $request)
@@ -77,10 +81,35 @@ class Controller extends BaseController
         return view('index_lokasi',compact("lokasi"));
     }
 
+    public function saveLokasi(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        $document = new Storage;
+        $document->name = $request->name;
+        $document->code = $request->code;
+        $document->description = $request->keterangan;
+        $document->save();
+
+        return response()->json(['status'=>1]);
+    }
+
     public function indexDepartment(Request $request)
     {
         $department = Department::get();
         return view('index_department',compact("department"));
+    }
+
+    public function saveDepartment(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        $document = new Department;
+        $document->name = $request->name;
+        $document->code = $request->code;
+        $document->save();
+
+        return response()->json(['status'=>1]);
     }
 
 }

@@ -73,17 +73,31 @@
 							<label class="col-sm-12 col-md-2 col-form-label">Department</label>
 							<div class="col-sm-12 col-md-10">
 								<select class="custom-select col-12" name="department">
-									<option selected="">Choose...</option>
-									<option value="1">CD</option>
-									<option value="2">HCM</option>
-									<option value="3">CM</option>
+									<option disabled selected>Pilih Department...</option>
+                                    @foreach ($department as $key => $value)
+                                        @if ($value->id == $document->department_id)
+                                            <option value="{{$value->id}}" selected>{{$value->name}}</option>
+                                        @else
+                                            <option value="{{$value->id}}">{{$value->name}}</option>
+                                        @endif
+                                    @endforeach
 								</select>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Lokasi File</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" value="{{$document->storage_id}}" type="text" name="lokasi">
+								{{-- <input class="form-control" value="{{$document->storage_id}}" type="text" name="lokasi"> --}}
+                                <select class="custom-select col-12" name="lokasi">
+									<option disabled selected>Pilih Lokasi...</option>
+                                    @foreach ($lokasi as $key => $value)
+                                        @if ($value->id == $document->storage_id)
+                                            <option value="{{$value->id}}" selected>{{$value->name}}</option>
+                                        @else
+                                            <option value="{{$value->id}}">{{$value->name}}</option>
+                                        @endif
+                                    @endforeach
+								</select>
 							</div>
 						</div>
 						<div class="form-group row">

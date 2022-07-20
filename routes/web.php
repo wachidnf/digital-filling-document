@@ -37,8 +37,10 @@ Route::get('/dashboard', function () {
     Route::post('/save-detail-document', 'Controller@saveDetailDocument')->middleware(['auth'])->name('save-detail-document');
 
     Route::get('/lokasi', 'Controller@indexLokasi')->middleware(['auth'])->name('lokasi');
+    Route::post('/save-lokasi', 'Controller@saveLokasi')->middleware(['auth'])->name('save-lokasi');
 
     Route::get('/department', 'Controller@indexDepartment')->middleware(['auth'])->name('department');
+    Route::post('/save-department', 'Controller@saveDepartment')->middleware(['auth'])->name('save-department');
 // });
 
 require __DIR__.'/auth.php';

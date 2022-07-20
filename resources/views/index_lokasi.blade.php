@@ -61,13 +61,34 @@
 											<span class="dt-checkbox-label"></span>
 										</div>
 									</th> --}}
-									<th>Department</th>
+									{{-- <th>Department</th> --}}
 									<th>Lokasi</th>
+                                    <th>code</th>
                                     <th>Keterangan</th>
                                     <th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
+                                @foreach ($lokasi as $key => $value)
+                                    <tr>
+                                        <td>{{$key+1}}</td>
+                                        <td>{{$value->name}}</td>
+                                        <td>{{$value->code}}</td>
+                                        <td>{{$value->description}}</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                                    <i class="dw dw-more"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                                    {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
+                                                    {{-- <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a> --}}
+                                                    {{-- <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a> --}}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
 						</table>
 					</div>
@@ -95,12 +116,12 @@
                             <input class="form-control" placeholder="" type="text" name="lokasi" value="" id="lokasi">
                         </div>
                     </div>
-                    {{-- <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">No Referensi</label>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Code</label>
                         <div class="col-sm-12 col-md-10">
-                            <input class="form-control" placeholder="" type="text" name="no_referensi" value="" id="no_referensi">
+                            <input class="form-control" placeholder="" type="text" name="code" value="" id="code">
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
                         <div class="col-sm-12 col-md-10">
@@ -110,7 +131,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="save_detail">SIMPAN LOKASI</button>
+                    <button type="button" class="btn btn-primary" id="save_lokasi">SIMPAN LOKASI</button>
                 </div>
             </div>
         </div>
@@ -148,17 +169,17 @@
             $("#ModalAddLokasi").modal('show');
         });
 
-        $(document).on('click', '#save_detail', function() {
-            var url = "{{ url('/') }}/save-detail-document";
+        $(document).on('click', '#save_lokasi', function() {
+            var url = "{{ url('/') }}/save-lokasi";
             $.ajax({
                 type: 'post',
                 dataType: 'json',
                 url: url,
                 data: {
-                    name: $("#name").val(),
-                    no_referensi: $("#no_referensi").val(),
-                    catatan: $("#catatan").val(),
-                    document_id: $("#document_id").val(),
+                    name: $("#lokasi").val(),
+                    code: $("#code").val(),
+                    keterangan: $("#keterangan").val(),
+                    // document_id: $("#document_id").val(),
                 },
                 beforeSend: function() {
                     // waitingDialog.show();

@@ -63,11 +63,30 @@
 									</th> --}}
 									<th>Name</th>
 									<th>Code</th>
-                                    <th>Keterangan</th>
+                                    {{-- <th>Keterangan</th> --}}
                                     <th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
+                                @foreach ($department as $key => $value)
+                                    <tr>
+                                        <td>{{$key+1}}</td>
+                                        <td>{{$value->name}}</td>
+                                        <td>{{$value->code}}</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                                    <i class="dw dw-more"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                                    {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
+                                                    {{-- <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a> --}}
+                                                    {{-- <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a> --}}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
 						</table>
 					</div>
@@ -101,16 +120,16 @@
                             <input class="form-control" placeholder="" type="text" name="code" value="" id="code">
                         </div>
                     </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
                         <div class="col-sm-12 col-md-10">
                             <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="save_detail">SIMPAN LOKASI</button>
+                    <button type="button" class="btn btn-primary" id="save_department">SIMPAN DEPARTMENT</button>
                 </div>
             </div>
         </div>
@@ -141,24 +160,24 @@
             }
         });
 
-        $(document).on('click', '#add_departmet', function() {
+        $(document).on('click', '#add_department', function() {
             // $("#index").val("");
             // $("#no_referensi").val("");
             // $("#catatan").val("");
             $("#ModalAddDepartment").modal('show');
         });
 
-        $(document).on('click', '#save_detail', function() {
-            var url = "{{ url('/') }}/save-detail-document";
+        $(document).on('click', '#save_department', function() {
+            var url = "{{ url('/') }}/save-department";
             $.ajax({
                 type: 'post',
                 dataType: 'json',
                 url: url,
                 data: {
                     name: $("#name").val(),
-                    no_referensi: $("#no_referensi").val(),
-                    catatan: $("#catatan").val(),
-                    document_id: $("#document_id").val(),
+                    code: $("#code").val(),
+                    // catatan: $("#catatan").val(),
+                    // document_id: $("#document_id").val(),
                 },
                 beforeSend: function() {
                     // waitingDialog.show();

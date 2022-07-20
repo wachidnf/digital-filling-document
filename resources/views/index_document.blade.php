@@ -74,7 +74,7 @@
                                     <tr>
                                         <td>{{$key+1}}</td>
                                         {{-- <td><input type="checkbox" name="select_one" value="1" id="example-select-one"></td> --}}
-                                        <td>{{$value->department_id}}</td>
+                                        <td>{{$value->department->name}}</td>
                                         <td>{{$value->document_no}}</td>
                                         <td>{{$value->seq_no}}</td>
                                         <td>{{$value->process_date}}</td>
