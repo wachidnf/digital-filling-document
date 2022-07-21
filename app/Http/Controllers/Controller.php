@@ -58,7 +58,14 @@ class Controller extends BaseController
         $department = Department::get();
         $lokasi = Storage::get();
         // return $request;
-        return view('view_document',compact("document","detail_document","department","lokasi"));
+        // $data = [
+        //     "document_id" => $document->id,
+        //     "type" => "document",
+        //     "url" => "http://localhost/digital-filling-document/public/view-document?id=".$document->id,
+        // ];
+        // $data = json_encode($data);
+        $data = "http://localhost/digital-filling-document/public/view-document?id=".$document->id;
+        return view('view_document',compact("document","detail_document","department","lokasi","data"));
     }
 
     public function deleteDocument(Request $request)

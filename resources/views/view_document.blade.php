@@ -44,6 +44,7 @@
 						<div class="pull-left">
 							<h4 class="text-blue h4">ADD DOKUMEN FILE</h4>
 							{{-- <p class="mb-30">All bootstrap element classies</p> --}}
+                            <button class="btn btn-primary" type="button" id="add_lokasi" onclick="cetak('{{$data}}')">QRCODE</button>
 						</div>
 						<div class="pull-right">
 							{{-- <a href="#basic-form1" class="btn btn-primary btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button"><i class="fa fa-code"></i> Source Code</a> --}}
@@ -198,6 +199,11 @@
 	<script src="vendors/scripts/script.min.js"></script>
 	<script src="vendors/scripts/process.js"></script>
 	<script src="vendors/scripts/layout-settings.js"></script>
+    <script src="{{ url('/') }}/qrcode/build/qrcode.js"></script>
+    <script src="{{ url('/') }}/qrcode/build/qrcode.min.js"></script>
+    <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.js"></script>
+    <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.min.js"></script>
+    {{-- <script src="{{ url('/') }}/assets/bower_components/select2/dist/js/select2.full.min.js"></script> --}}
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -236,6 +242,35 @@
                 },
             });
         });
+        function cetak(uuid){
+            // $("#table_qrcode").on('click', '.cetak', function() {
+            // console.log($(this).parents(".test").find(".qr").html());
+
+            QRCode.toString(uuid, function (err, string) {
+                if (err) throw err
+                var mywindow = window.open("", "PRINT", "height=400,width=600");
+                mywindow.document.write("<html><head>");
+                mywindow.document.write("</head><body >");
+                // mywindow.document.write("<h1>" + document.title  + "</h1>");
+                mywindow.document.write("<row>");
+                // for (i = 0; i < 10; i++) {
+                // mywindow.document.write("<div style='display: inline-block'><div style='width:2300px;height:1550px;border: 2px dashed black;margin: 10px;display: flex'>");
+                // mywindow.document.write("<div  style='width:1000px;display: inline-block'>"+
+                // "<div style='width:100%;height:500px;padding-top:20px;padding-left:10px;margin:auto'><img class='img img-responsive' src='{{ url('/') }}/assets/dist/img/logo-ciputra_original_old2.png' style='width:100%'></div>"+
+                // "<div style='width:100$;padding:10px'><h2 style='margin: 0 auto;text-align: left'><label>Unit:</label><br><br><label>Kawasan:</label><br><br><br></h2></div></div>");
+                mywindow.document.write("<div style='width:500px;display: inline-block;margin:auto'>"+string+"</div>");
+                // mywindow.document.write("</div></div>");
+                // }
+                mywindow.document.write("</row>");
+                mywindow.document.write("</body></html>");
+                mywindow.document.close(); // necessary for IE >= 10
+                mywindow.focus(); // necessary for IE >= 10*/
+                mywindow.print();
+                console.log(string)
+            })
+
+            //     // return true;
+        };
     </script>
 </body>
 </html>
