@@ -61,6 +61,15 @@ class Controller extends BaseController
         return view('view_document',compact("document","detail_document","department","lokasi"));
     }
 
+    public function deleteDocument(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        Document::find($request->id)->delete();
+
+        return redirect("/document");
+    }
+
     public function saveDetailDocument(Request $request)
     {
         // dd($request);
@@ -94,10 +103,28 @@ class Controller extends BaseController
         return response()->json(['status'=>1]);
     }
 
+    public function deleteLokasi(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        Storage::find($request->id)->delete();
+
+        return redirect("/lokasi");
+    }
+
     public function indexDepartment(Request $request)
     {
         $department = Department::get();
         return view('index_department',compact("department"));
+    }
+
+    public function deleteDepartment(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        Department::find($request->id)->delete();
+
+        return redirect("/department");
     }
 
     public function saveDepartment(Request $request)

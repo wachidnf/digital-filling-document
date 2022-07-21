@@ -34,13 +34,16 @@ Route::get('/dashboard', function () {
     Route::get('/create-document', 'Controller@createDocument')->middleware(['auth'])->name('create-document');
     Route::post('/save-document', 'Controller@saveDocument')->middleware(['auth'])->name('save-document');
     Route::get('/view-document', 'Controller@viewDocument')->middleware(['auth'])->name('view-document');
+    Route::get('/delete-document', 'Controller@deleteDocument')->middleware(['auth'])->name('delete-document');
     Route::post('/save-detail-document', 'Controller@saveDetailDocument')->middleware(['auth'])->name('save-detail-document');
 
     Route::get('/lokasi', 'Controller@indexLokasi')->middleware(['auth'])->name('lokasi');
     Route::post('/save-lokasi', 'Controller@saveLokasi')->middleware(['auth'])->name('save-lokasi');
+    Route::get('/delete-lokasi', 'Controller@deleteLokasi')->middleware(['auth'])->name('delete-lokasi');
 
     Route::get('/department', 'Controller@indexDepartment')->middleware(['auth'])->name('department');
     Route::post('/save-department', 'Controller@saveDepartment')->middleware(['auth'])->name('save-department');
+    Route::get('/delete-department', 'Controller@deleteDepartment')->middleware(['auth'])->name('delete-department');
 // });
 
 require __DIR__.'/auth.php';
