@@ -30,7 +30,7 @@ class DigitalFillingDocument extends Migration
             $table->id();
             $table->string('code');
             $table->string('name');
-            $table->string('level');
+            $table->string('level')->nullable();
             $table->text('description');
             $table->timestamps();
             $table->softDeletes();
