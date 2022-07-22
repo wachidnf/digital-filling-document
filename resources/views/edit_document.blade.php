@@ -76,7 +76,7 @@
 								<select class="custom-select col-12" name="department">
 									<option disabled selected>Pilih Department...</option>
                                     @foreach ($department as $key => $value)
-                                        <option value="{{$value->id}}" {{ $document->department_id == $value->id ? 'selected' : 'disabled' }}>{{$value->name}}</option>
+                                        <option value="{{$value->id}}" {{ $document->department_id == $value->id ? 'selected' : '' }}>{{$value->name}}</option>
                                     @endforeach
 								</select>
 							</div>
@@ -88,7 +88,7 @@
                                 <select class="custom-select col-12" name="lokasi">
 									<option disabled selected>Pilih Lokasi...</option>
                                     @foreach ($lokasi as $key => $value)
-                                        <option value="{{$value->id}}" {{ $document->storage_id == $value->id ? 'selected' : 'disabled' }}>{{$value->name}}</option>
+                                        <option value="{{$value->id}}" {{ $document->storage_id == $value->id ? 'selected' : '' }}>{{$value->name}}</option>
                                     @endforeach
 								</select>
 							</div>
