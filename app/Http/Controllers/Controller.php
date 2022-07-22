@@ -64,7 +64,7 @@ class Controller extends BaseController
         //     "url" => "http://localhost/digital-filling-document/public/view-document?id=".$document->id,
         // ];
         // $data = json_encode($data);
-        $data = "http://localhost/digital-filling-document/public/view-document?id=".$document->id;
+        $data = "http://localhost/digital-filling-document/public/view-document-direct?id=".$document->id;
         return view('view_document',compact("document","detail_document","department","lokasi","data"));
     }
 

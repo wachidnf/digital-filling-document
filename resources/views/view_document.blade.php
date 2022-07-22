@@ -138,6 +138,7 @@
                                     <th>Name</th>
 									<th>No Referensi</th>
 									<th>Catatan</th>
+                                    <th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -146,6 +147,18 @@
                                         <td>{{$value->name}}</td>
                                         <td>{{$value->reference_no}}</td>
                                         <td>{{$value->notes}}</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                                    <i class="dw dw-more"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                                    {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
+                                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                                    <a class="dropdown-item" href="delete-detail-document?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
