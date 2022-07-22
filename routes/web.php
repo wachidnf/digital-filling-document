@@ -50,6 +50,8 @@ Route::get('/dashboard', function () {
     Route::get('/delete-department', 'Controller@deleteDepartment')->middleware(['auth'])->name('delete-department');
     Route::post('/list-department', 'Controller@listDepartment')->middleware(['auth'])->name('list-department');
     Route::post('/update-department', 'Controller@updateDepartment')->middleware(['auth'])->name('update-department');
+
+    Route::get('/view-document-direct', 'Controller@viewDocument')->name('view-document');
 // });
 
 require __DIR__.'/auth.php';
