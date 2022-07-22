@@ -82,7 +82,7 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                                     {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
-                                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                                    <a class="dropdown-item" href="#" id="edit_lokasi" data-id="{{ $value->id }}"><i class="dw dw-edit2"></i> Edit</a>
                                                     <a class="dropdown-item" href="delete-lokasi?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
                                                 </div>
                                             </div>
@@ -136,6 +136,43 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="ModalEditLokasi" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel">EDIT LOKASI DOCUMENT</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    {{-- <input class="form-control" placeholder="" type="hidden" name="document_id" value="{{$document->id}}" id="document_id"> --}}
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Lokasi</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input class="form-control" placeholder="" type="hidden" name="id_lokasi" id="id_lokasi">
+                            <input class="form-control" placeholder="" type="text" name="lokasi_edit" value="" id="lokasi_edit">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Code</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input class="form-control" placeholder="" type="text" name="edit_code" value="" id="edit_code">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
+                        <div class="col-sm-12 col-md-10">
+                            <textarea class="form-control" name="edit_keterangan" id="edit_keterangan"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="update_lokasi">SIMPAN LOKASI</button>
+                </div>
+            </div>
+        </div>
+    </div>
 	<!-- js -->
 	<script src="vendors/scripts/core.js"></script>
 	<script src="vendors/scripts/script.min.js"></script>
@@ -169,6 +206,30 @@
             $("#ModalAddLokasi").modal('show');
         });
 
+        $(document).on('click', '#edit_lokasi', function() {
+            // $("#index").val("");
+            // $("#no_referensi").val("");
+            // $("#catatan").val("");
+            var id = $(this).data("id");
+            $("#id_lokasi").val(id);
+            var url = "{{ url('/') }}/list-lokasi";
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    id: id
+                    // document_id: $("#document_id").val(),
+                },
+                success: function(data) {
+                    $("#lokasi_edit").val(data.name);
+                    $("#edit_code").val(data.code);
+                    $("#edit_keterangan").val(data.description);
+                },
+            });
+            $("#ModalEditLokasi").modal('show');
+        });
+
         $(document).on('click', '#save_lokasi', function() {
             var url = "{{ url('/') }}/save-lokasi";
             $.ajax({
@@ -179,6 +240,31 @@
                     name: $("#lokasi").val(),
                     code: $("#code").val(),
                     keterangan: $("#keterangan").val(),
+                    // document_id: $("#document_id").val(),
+                },
+                beforeSend: function() {
+                    // waitingDialog.show();
+                },
+                success: function(data) {
+                    window.location.reload();
+                },
+                complete: function() {
+                    // waitingDialog.hide();
+                },
+            });
+        });
+
+        $(document).on('click', '#update_lokasi', function() {
+            var url = "{{ url('/') }}/update-lokasi";
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    id: $("#id_lokasi").val(),
+                    name: $("#lokasi_edit").val(),
+                    code: $("#edit_code").val(),
+                    keterangan: $("#edit_keterangan").val(),
                     // document_id: $("#document_id").val(),
                 },
                 beforeSend: function() {

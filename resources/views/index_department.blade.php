@@ -80,7 +80,7 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                                     {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
-                                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                                    <a class="dropdown-item" href="#" id="edit_department" data-id="{{ $value->id }}"><i class="dw dw-edit2"></i> Edit</a>
                                                     <a class="dropdown-item" href="delete-department?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
                                                 </div>
                                             </div>
@@ -134,6 +134,42 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="ModalEditDepartment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel">EDIT DEPARTMENT</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    {{-- <input class="form-control" placeholder="" type="hidden" name="document_id" value="{{$document->id}}" id="document_id"> --}}
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Name</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input type="hidden" id="id_department" name="id_department">
+                            <input class="form-control" placeholder="" type="text" name="edit_name" value="" id="edit_name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Code</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input class="form-control" placeholder="" type="text" name="edit_code" value="" id="edit_code">
+                        </div>
+                    </div>
+                    {{-- <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
+                        <div class="col-sm-12 col-md-10">
+                            <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
+                        </div>
+                    </div> --}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="update_department">SIMPAN DEPARTMENT</button>
+                </div>
+            </div>
+        </div>
+    </div>
 	<!-- js -->
 	<script src="vendors/scripts/core.js"></script>
 	<script src="vendors/scripts/script.min.js"></script>
@@ -167,6 +203,29 @@
             $("#ModalAddDepartment").modal('show');
         });
 
+        $(document).on('click', '#edit_department', function() {
+            // $("#index").val("");
+            // $("#no_referensi").val("");
+            // $("#catatan").val("");
+            var id = $(this).data("id");
+            $("#id_department").val(id);
+            var url = "{{ url('/') }}/list-department";
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    id: id
+                    // document_id: $("#document_id").val(),
+                },
+                success: function(data) {
+                    $("#edit_name").val(data.name);
+                    $("#edit_code").val(data.code);
+                },
+            });
+            $("#ModalEditDepartment").modal('show');
+        });
+
         $(document).on('click', '#save_department', function() {
             var url = "{{ url('/') }}/save-department";
             $.ajax({
@@ -176,6 +235,31 @@
                 data: {
                     name: $("#name").val(),
                     code: $("#code").val(),
+                    // catatan: $("#catatan").val(),
+                    // document_id: $("#document_id").val(),
+                },
+                beforeSend: function() {
+                    // waitingDialog.show();
+                },
+                success: function(data) {
+                    window.location.reload();
+                },
+                complete: function() {
+                    // waitingDialog.hide();
+                },
+            });
+        });
+
+        $(document).on('click', '#update_department', function() {
+            var url = "{{ url('/') }}/update-department";
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    id: $("#id_department").val(),
+                    name: $("#edit_name").val(),
+                    code: $("#edit_code").val(),
                     // catatan: $("#catatan").val(),
                     // document_id: $("#document_id").val(),
                 },

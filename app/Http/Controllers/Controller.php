@@ -36,10 +36,34 @@ class Controller extends BaseController
         return view('create_document',compact("department","lokasi"));
     }
 
+    public function editDocument(Request $request)
+    {
+        // $document = Document::all();
+        $document = Document::find($request->id);
+        $department = Department::get();
+        $lokasi = Storage::get();
+        return view('edit_document',compact("department","lokasi","document"));
+    }
+
     public function saveDocument(Request $request)
     {
         // dd($request);
         $document = new Document;
+        $document->process_date = $request->tgl_process;
+        $document->seq_no = $request->seq_nomor;
+        $document->document_no = $request->no_dokumen;
+        $document->department_id = $request->department;
+        $document->description = $request->keterangan;
+        $document->storage_id = $request->lokasi;
+        $document->save();
+
+        return redirect("/document");
+    }
+
+    public function updateDocument(Request $request)
+    {
+        // dd($request);
+        $document = Document::find($request->document_id);
         $document->process_date = $request->tgl_process;
         $document->seq_no = $request->seq_nomor;
         $document->document_no = $request->no_dokumen;
@@ -110,6 +134,28 @@ class Controller extends BaseController
         return response()->json(['status'=>1]);
     }
 
+    public function updateLokasi(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        $storage = Storage::find($request->id);
+        $storage->name = $request->name;
+        $storage->code = $request->code;
+        $storage->description = $request->keterangan;
+        $storage->save();
+
+        return response()->json(['status'=>1]);
+    }
+
+    public function listLokasi(Request $request)
+    {
+        $storage = Storage::find($request->id);
+        $data['name']           = $storage->name;
+        $data['code']           = $storage->code;
+        $data['description']    = $storage->description;
+        return response()->json($data);
+    }
+
     public function deleteLokasi(Request $request)
     {
         // dd($request);
@@ -123,6 +169,26 @@ class Controller extends BaseController
     {
         $department = Department::get();
         return view('index_department',compact("department"));
+    }
+
+    public function updateDepartment(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        $department = Department::find($request->id);
+        $department->name = $request->name;
+        $department->code = $request->code;
+        $department->save();
+
+        return response()->json(['status'=>1]);
+    }
+
+    public function listDepartment(Request $request)
+    {
+        $department     = Department::find($request->id);
+        $data['name']   = $department->name;
+        $data['code']   = $department->code;
+        return response()->json($data);
     }
 
     public function deleteDepartment(Request $request)
