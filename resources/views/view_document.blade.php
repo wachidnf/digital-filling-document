@@ -55,7 +55,7 @@
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Tanggal Proses</label>
 							<div class="col-sm-12 col-md-10">
-								<input class="form-control" type="date" placeholder="" name="tgl_process" value="{{date('d/m/Y', strtotime($document->process_date))}}">
+								<input class="form-control" type="date" placeholder="" name="tgl_process" value="{{date('Y-m-d', strtotime($document->process_date))}}">
 							</div>
 						</div>
 						<div class="form-group row">
