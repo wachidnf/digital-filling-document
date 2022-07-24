@@ -11,16 +11,16 @@
     <div class="menu-block customscroll">
         <div class="sidebar-menu">
             <ul id="accordion-menu">
-                <li class="dropdown">
+                {{-- <li class="dropdown">
                     <a href="dashboard" class="dropdown-toggle no-arrow">
                         <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
-                    </a>
+                    </a> --}}
                     {{-- <ul class="submenu">
                         <li><a href="index.html">Dashboard style 1</a></li>
                         <li><a href="index2.html">Dashboard style 2</a></li>
                         <li><a href="index3.html">Dashboard style 3</a></li>
                     </ul> --}}
-                </li>
+                {{-- </li> --}}
                 <li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon dw dw-edit2"></span><span class="mtext">Forms</span>
