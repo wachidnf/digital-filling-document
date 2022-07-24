@@ -51,7 +51,7 @@
                             {{-- <button class="btn btn-primary" type="button">SYNCH</button>
                             <button class="btn btn-primary" type="button">SEND</button> --}}
                         </div>
-						<table class="table nowrap">
+						<table class="table nowrap" id="index_document">
 							<thead>
 								<tr>
                                     <th>No</th>
@@ -66,6 +66,7 @@
 									<th>Seq Number</th>
 									<th>Tgl Proses</th>
 									<th>Keterangan</th>
+                                    <th>Qr Code</th>
                                     <th>action</th>
 								</tr>
 							</thead>
@@ -79,6 +80,7 @@
                                         <td>{{$value->seq_no}}</td>
                                         <td>{{$value->process_date}}</td>
                                         <td>{{$value->description}}</td>
+                                        <td>{{$value->link_qrcode}}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
@@ -123,4 +125,69 @@
 	<script src="src/plugins/datatables/js/vfs_fonts.js"></script>
 	<!-- Datatable Setting js -->
 	<script src="vendors/scripts/datatable-setting.js"></script></body>
+
+    <script src="{{ url('/') }}/qrcode/build/qrcode.js"></script>
+    <script src="{{ url('/') }}/qrcode/build/qrcode.min.js"></script>
+    <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.js"></script>
+    <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.min.js"></script>
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-Token': $('input[name=_token]').val()
+            }
+        });
+
+        var table = $('#index_document').DataTable({
+            "language": {
+                "processing": '<i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="font-size: 50px;"></i>',
+            },
+            // "dom": 'Bfrtip',
+            "searching": true,
+            "autoWidth": true,
+            "processing": true,
+            "serverSide": false,
+            "columnDefs": [
+                {
+                    // "className" : 'dt-body-right'
+                    "render": function(data, type, row) {
+                        var html = "";
+                        QRCode.toString(data, function (err, string) {
+                            if (err) throw err
+                            html += "<div style='width:100%;display: inline-block;margin:auto' class='qrcode' data-link='"+data+"'>"+string+"</div>"
+                        })
+                        return html;
+                    },
+                    "targets" : 6,
+
+                },
+            ],
+        });
+
+        $(document).on('click', '.qrcode', function() {
+            QRCode.toString($(this).attr("data-link"), function (err, string) {
+                if (err) throw err
+                var mywindow = window.open("", "PRINT", "height=400,width=600");
+                mywindow.document.write("<html><head>");
+                mywindow.document.write("</head><body >");
+                // mywindow.document.write("<h1>" + document.title  + "</h1>");
+                mywindow.document.write("<row>");
+                // for (i = 0; i < 10; i++) {
+                // mywindow.document.write("<div style='display: inline-block'><div style='width:2300px;height:1550px;border: 2px dashed black;margin: 10px;display: flex'>");
+                // mywindow.document.write("<div  style='width:1000px;display: inline-block'>"+
+                // "<div style='width:100%;height:500px;padding-top:20px;padding-left:10px;margin:auto'><img class='img img-responsive' src='{{ url('/') }}/assets/dist/img/logo-ciputra_original_old2.png' style='width:100%'></div>"+
+                // "<div style='width:100$;padding:10px'><h2 style='margin: 0 auto;text-align: left'><label>Unit:</label><br><br><label>Kawasan:</label><br><br><br></h2></div></div>");
+                mywindow.document.write("<div style='width:500px;display: inline-block;margin:auto'>"+string+"</div>");
+                // mywindow.document.write("</div></div>");
+                // }
+                mywindow.document.write("</row>");
+                mywindow.document.write("</body></html>");
+                mywindow.document.close(); // necessary for IE >= 10
+                mywindow.focus(); // necessary for IE >= 10*/
+                mywindow.print();
+                console.log(string)
+            })
+        });
+
+    </script>
 </html>

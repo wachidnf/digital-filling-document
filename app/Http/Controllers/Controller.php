@@ -12,7 +12,7 @@ use App\Models\Document;
 use App\Models\DetailDocument;
 use App\Models\Storage;
 use App\Models\Department;
-
+use Illuminate\Support\Facades\Crypt;
 
 class Controller extends BaseController
 {
