@@ -212,4 +212,21 @@ class Controller extends BaseController
         return response()->json(['status'=>1]);
     }
 
+    public function qrcodeViewDocument(Request $request)
+    {
+        $document = Document::find($request->id);
+        $detail_document = DetailDocument::where("document_id",$document->id)->get();
+        $department = Department::get();
+        $lokasi = Storage::get();
+        // return $request;
+        // $data = [
+        //     "document_id" => $document->id,
+        //     "type" => "document",
+        //     "url" => "http://localhost/digital-filling-document/public/view-document?id=".$document->id,
+        // ];
+        // $data = json_encode($data);
+        $data = "http://localhost/digital-filling-document/public/view-document-direct?id=".$document->id;
+        return view('qrcode_view_document',compact("document","detail_document","department","lokasi","data"));
+    }
+
 }

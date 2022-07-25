@@ -27,6 +27,6 @@ class Document extends Model
     }
 
     public function getLinkQrcodeAttribute(){
-        return url('/')."/digital-filling-document/public/view-document-direct?id=".$this->id;
+        return url('/')."/view-document-direct?id=".$this->id;
     }
 }
