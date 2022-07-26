@@ -64,6 +64,7 @@
 									{{-- <th>Department</th> --}}
 									<th>Lokasi</th>
                                     <th>Code</th>
+                                    <th>Level</th>
                                     <th>Keterangan</th>
                                     <th>Action</th>
 								</tr>
@@ -74,6 +75,7 @@
                                         <td>{{$key+1}}</td>
                                         <td>{{$value->name}}</td>
                                         <td>{{$value->code}}</td>
+                                        <td>{{ $value->level_storages->name }}</td>
                                         <td>{{$value->description}}</td>
                                         <td>
                                             <div class="dropdown">
