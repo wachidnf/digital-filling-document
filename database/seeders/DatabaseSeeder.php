@@ -26,12 +26,14 @@ class DatabaseSeeder extends Seeder
         DB::table('storages')->insert([
             'name' => "Gudang 1",
             'code' => "G1",
+            'level' => 2,
             'description' => "Gudang 1",
         ]);
 
         DB::table('storages')->insert([
             'name' => "Gudang 2",
             'code' => "G2",
+            'level' => 1,
             'description' => "Gudang 2",
         ]);
 
@@ -43,6 +45,18 @@ class DatabaseSeeder extends Seeder
         DB::table('departments')->insert([
             'name' => "MKT",
             'code' => "MKT",
+        ]);
+
+        DB::table('level_storages')->insert([
+            'name' => "Odner",
+        ]);
+
+        DB::table('level_storages')->insert([
+            'name' => "Rak",
+        ]);
+
+        DB::table('level_storages')->insert([
+            'name' => "Lemari",
         ]);
     }
 }

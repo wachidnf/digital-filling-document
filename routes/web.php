@@ -49,6 +49,7 @@ Route::get('/dashboard', function () {
     Route::get('/delete-lokasi', 'Controller@deleteLokasi')->middleware(['auth'])->name('delete-lokasi');
     Route::post('/list-lokasi', 'Controller@listLokasi')->middleware(['auth'])->name('list-lokasi');
     Route::post('/update-lokasi', 'Controller@updateLokasi')->middleware(['auth'])->name('update-lokasi');
+    Route::get('/edit-lokasi', 'Controller@editLokasi')->middleware(['auth'])->name('edit-lokasi');
 
     Route::get('/department', 'Controller@indexDepartment')->middleware(['auth'])->name('department');
     Route::post('/save-department', 'Controller@saveDepartment')->middleware(['auth'])->name('save-department');

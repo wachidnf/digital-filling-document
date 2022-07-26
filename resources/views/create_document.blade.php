@@ -87,7 +87,7 @@
                                 <select class="custom-select col-12" name="lokasi">
 									<option disabled selected>Pilih Lokasi...</option>
                                     @foreach ($lokasi as $key => $value)
-                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                        <option value="{{$value->id}}">{{ $value->level_storages->name  }} - {{$value->name}}</option>
                                     @endforeach
 								</select>
 							</div>

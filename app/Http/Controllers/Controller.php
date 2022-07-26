@@ -12,6 +12,7 @@ use App\Models\Document;
 use App\Models\DetailDocument;
 use App\Models\Storage;
 use App\Models\Department;
+use App\Models\LevelStorage;
 use Illuminate\Support\Facades\Crypt;
 
 class Controller extends BaseController
@@ -118,7 +119,15 @@ class Controller extends BaseController
     public function indexLokasi(Request $request)
     {
         $lokasi = Storage::get();
-        return view('index_lokasi',compact("lokasi"));
+        $level = LevelStorage::get();
+        return view('index_lokasi',compact("lokasi", "level"));
+    }
+
+    public function editLokasi(Request $request)
+    {
+        $document = Storage::find($request->id);
+        $level = LevelStorage::get();
+        return view('edit_lokasi',compact("document", "level"));
     }
 
     public function saveLokasi(Request $request)
@@ -127,6 +136,7 @@ class Controller extends BaseController
         // return $request;
         $document = new Storage;
         $document->name = $request->name;
+        $document->level = $request->level;
         $document->code = $request->code;
         $document->description = $request->keterangan;
         $document->save();
@@ -140,17 +150,20 @@ class Controller extends BaseController
         // return $request;
         $storage = Storage::find($request->id);
         $storage->name = $request->name;
+        $storage->level = $request->level;
         $storage->code = $request->code;
         $storage->description = $request->keterangan;
         $storage->save();
 
-        return response()->json(['status'=>1]);
+        // return response()->json(['status'=>1]);
+        return redirect("/lokasi");
     }
 
     public function listLokasi(Request $request)
     {
         $storage = Storage::find($request->id);
         $data['name']           = $storage->name;
+        $data['level']          = $storage->level;
         $data['code']           = $storage->code;
         $data['description']    = $storage->description;
         return response()->json($data);

@@ -93,9 +93,9 @@
 									<option disabled selected>Pilih Lokasi...</option>
                                     @foreach ($lokasi as $key => $value)
                                         @if ($value->id == $document->storage_id)
-                                            <option value="{{$value->id}}" selected>{{$value->name}}</option>
+                                            <option value="{{$value->id}}" selected>{{ $value->level_storages->name  }} - {{$value->name}}</option>
                                         @else
-                                            <option value="{{$value->id}}">{{$value->name}}</option>
+                                            <option value="{{$value->id}}">{{ $value->level_storages->name  }} - {{$value->name}}</option>
                                         @endif
                                     @endforeach
 								</select>

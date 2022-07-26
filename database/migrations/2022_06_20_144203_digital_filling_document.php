@@ -129,6 +129,15 @@ class DigitalFillingDocument extends Migration
             $table->integer('deleted_by')->nullable();
         });
 
+        Schema::create('level_storages', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
+        });
     }
 
     /**
@@ -148,6 +157,6 @@ class DigitalFillingDocument extends Migration
         Schema::dropIfExists('session_logins');
         Schema::dropIfExists('projects');
         Schema::dropIfExists('user_details');
-
+        Schema::dropIfExists('level_storages');
     }
 }

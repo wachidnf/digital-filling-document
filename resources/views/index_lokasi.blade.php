@@ -63,7 +63,7 @@
 									</th> --}}
 									{{-- <th>Department</th> --}}
 									<th>Lokasi</th>
-                                    <th>code</th>
+                                    <th>Code</th>
                                     <th>Keterangan</th>
                                     <th>Action</th>
 								</tr>
@@ -81,8 +81,8 @@
                                                     <i class="dw dw-more"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                                    {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
-                                                    <a class="dropdown-item" href="#" id="edit_lokasi" data-id="{{ $value->id }}"><i class="dw dw-edit2"></i> Edit</a>
+                                                    <a class="dropdown-item" href="edit-lokasi?id={{$value->id}}"><i class="dw dw-eye"></i> Edit</a>
+                                                    {{-- <a class="dropdown-item" href="#" id="edit_lokasi" data-id="{{ $value->id }}"><i class="dw dw-edit2"></i> Edit</a> --}}
                                                     <a class="dropdown-item" href="delete-lokasi?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
                                                 </div>
                                             </div>
@@ -120,6 +120,17 @@
                         <label class="col-sm-12 col-md-2 col-form-label">Code</label>
                         <div class="col-sm-12 col-md-10">
                             <input class="form-control" placeholder="" type="text" name="code" value="" id="code">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Level</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select class="custom-select col-12" name="level" id="level">
+                                <option disabled selected>-- Pilih Level --</option>
+                                @foreach ($level as $key => $value)
+                                    <option value="{{$value->id}}">{{$value->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -238,6 +249,7 @@
                 url: url,
                 data: {
                     name: $("#lokasi").val(),
+                    level: $("#level").val(),
                     code: $("#code").val(),
                     keterangan: $("#keterangan").val(),
                     // document_id: $("#document_id").val(),
