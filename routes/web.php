@@ -57,7 +57,7 @@ Route::get('/dashboard', function () {
     Route::post('/list-department', 'Controller@listDepartment')->middleware(['auth'])->name('list-department');
     Route::post('/update-department', 'Controller@updateDepartment')->middleware(['auth'])->name('update-department');
 
-    Route::get('/view-document-direct', 'Controller@viewDocument')->name('view-document');
+    Route::get('/view-document-direct', 'Controller@qrcodeViewDocument')->name('qrcode-view-document');
 // });
 
 require __DIR__.'/auth.php';
