@@ -60,6 +60,8 @@ Route::get('/dashboard', function () {
     Route::get('/view-document-direct', 'Controller@qrcodeViewDocument')->name('qrcode-view-document');
 
     Route::post('/file_attachment', 'Controller@fileAttachment')->name('file_attachment');
+    Route::get('/download-file', 'Controller@downloadFile')->name('download-file');
+
 // });
 
 require __DIR__.'/auth.php';

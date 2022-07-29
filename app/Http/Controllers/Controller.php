@@ -307,9 +307,9 @@ class Controller extends BaseController
         $attachment = Attachment::where('source_id',$request->source_id)->where('type',$request->type)->get();
         foreach ($attachment as $key => $value)
         {
-            // $url = Storage::url($value->link);
+            $url = url('/')."/download-file?id=".$value->id;
             $arr = [
-                "file"        => '<a class="btn btn-info font_kecil" href="'.$value->link.'""><i class="fa fa-cloud-download"></i> </a>',
+                "file"        => '<a class="btn btn-info font_kecil" href="'.$url.'""><i class="fa fa-cloud-download">Download</i> </a>',
                 "description"    => $value->description,
             ];
             array_push($data, $arr);
@@ -317,6 +317,29 @@ class Controller extends BaseController
         }
 
         return response()->json(['file' => $data]);
+    }
+
+    public function downloadFile(Request $request)
+    {
+        // return "ss";
+        $attachment = Attachment::find($request->id);
+
+        // $headers = [
+        //     'Content-Type' => 'application/pdf',
+        // ];
+        if ($attachment != "") {
+            $filenames =$attachment->filename;
+        }
+
+        // if (count($filenames) != 5) {
+        //     $name = "Gambar Lampiran";
+        // } else {
+            $name = $filenames;
+        // }
+
+        // $file = public_path() . "/" . str_replace("public", "", $attachment->filenames);
+        // return response()->download($file, $name, $headers);
+        return Storage::download($attachment->link, $name);
     }
 
 }

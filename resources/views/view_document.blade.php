@@ -251,9 +251,9 @@
                 <table id="file_attachment" class="table table-bordered bg-white mg-b-0 tx-center" style="font-size:15px; width: 100%; ">
                     <thead class="head_table">
                     <tr style="border: 1px solid black;">
-                        <td rowspan="" style="vertical-align: middle;">No</td>
-                        <td rowspan="" style="vertical-align: middle;">Foto</td>
-                        <td rowspan="" style="vertical-align: middle;">Note</td>
+                        <td rowspan="" style="vertical-align: middle;text-align: center">No</td>
+                        <td rowspan="" style="vertical-align: middle;text-align: center">File Lampiran</td>
+                        <td rowspan="" style="vertical-align: middle;text-align: center">Note</td>
                     </tr>
                     </thead>
                 </table>
@@ -385,46 +385,52 @@
                     {data:"description",name:"description"},
             ],
             "order": [[ 0, 'asc' ]]
+            // "columnDefs": [
+            //     {
+            //         "targets": 1,
+            //         // "className": "text-center",
+            //     }
+            // ],
         });
 
         function file(source_id,type){
-        var url = "{{ url('/')}}/file_attachment";
-        $('#file_attachment').DataTable().clear().draw();
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: url,
-            data: {
-                source_id : source_id,
-                type : type,
-            },
-            // beforeSend: function() {
-            //     waitingDialog.show();
-            // },
-            success: function(data) {
-                if (data.file.length > 0) {
-                  // console.log(data);
-                    $(data.file).each(function(i, v) {
-                      // console.log(v.status);
-                        var ItemTable = {
-                            no: i+1,
-                            file: v.file,
-                            description: v.description,
+            var url = "{{ url('/')}}/file_attachment";
+            $('#file_attachment').DataTable().clear().draw();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    source_id : source_id,
+                    type : type,
+                },
+                // beforeSend: function() {
+                //     waitingDialog.show();
+                // },
+                success: function(data) {
+                    if (data.file.length > 0) {
+                    // console.log(data);
+                        $(data.file).each(function(i, v) {
+                        // console.log(v.status);
+                            var ItemTable = {
+                                no: i+1,
+                                file: v.file,
+                                description: v.description,
 
-                        };
-                        $('#file_attachment').DataTable().row.add(ItemTable);
-                    });
-                }
-                // $('#modalfiletitle').text("File Lampiran");
-                $('#file_attachment').DataTable().draw();
-                // $('#index_detail').DataTable().columns.adjust();
-            },
-            // complete: function() {
-            //     waitingDialog.hide();
-            // }
-        });
-        $("#ModalFile").modal('show');
-    }
+                            };
+                            $('#file_attachment').DataTable().row.add(ItemTable);
+                        });
+                    }
+                    // $('#modalfiletitle').text("File Lampiran");
+                    $('#file_attachment').DataTable().draw();
+                    // $('#index_detail').DataTable().columns.adjust();
+                },
+                // complete: function() {
+                //     waitingDialog.hide();
+                // }
+            });
+            $("#ModalFile").modal('show');
+        }
     </script>
 </body>
 </html>

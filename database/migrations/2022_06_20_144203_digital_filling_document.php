@@ -26,7 +26,7 @@ class DigitalFillingDocument extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('storages', function (Blueprint $table) {
+        Schema::create('m_storages', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->string('name');
