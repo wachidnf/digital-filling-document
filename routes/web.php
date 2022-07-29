@@ -58,6 +58,8 @@ Route::get('/dashboard', function () {
     Route::post('/update-department', 'Controller@updateDepartment')->middleware(['auth'])->name('update-department');
 
     Route::get('/view-document-direct', 'Controller@qrcodeViewDocument')->name('qrcode-view-document');
+
+    Route::post('/file_attachment', 'Controller@fileAttachment')->name('file_attachment');
 // });
 
 require __DIR__.'/auth.php';

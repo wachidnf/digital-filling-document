@@ -10,10 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\Document;
 use App\Models\DetailDocument;
-use App\Models\Storage;
+use App\Models\MStorage;
 use App\Models\Department;
 use App\Models\LevelStorage;
+use App\Models\Attachment;
 use Illuminate\Support\Facades\Crypt;
+use Storage;
 
 class Controller extends BaseController
 {
@@ -33,7 +35,7 @@ class Controller extends BaseController
     {
         // $document = Document::all();
         $department = Department::get();
-        $lokasi = Storage::get();
+        $lokasi = MStorage::get();
         return view('create_document',compact("department","lokasi"));
     }
 
@@ -42,7 +44,7 @@ class Controller extends BaseController
         // $document = Document::all();
         $document = Document::find($request->id);
         $department = Department::get();
-        $lokasi = Storage::get();
+        $lokasi = MStorage::get();
         return view('edit_document',compact("department","lokasi","document"));
     }
 
@@ -81,7 +83,7 @@ class Controller extends BaseController
         $document = Document::find($request->id);
         $detail_document = DetailDocument::where("document_id",$document->id)->get();
         $department = Department::get();
-        $lokasi = Storage::get();
+        $lokasi = MStorage::get();
         // return $request;
         // $data = [
         //     "document_id" => $document->id,
@@ -113,19 +115,73 @@ class Controller extends BaseController
         $document->notes = $request->catatan;
         $document->save();
 
-        return response()->json(['status'=>1]);
+        // if (!file_exists("./detail_document/" )) {
+        //     mkdir("./detail_document/", 0777, true);
+        //     chmod("./detail_document/", 0777);
+        // }
+
+        //  if (!file_exists("./detail_document/" . $document->id)) {
+        //     mkdir("./detail_document/" . $document->id, 0777, true);
+        //     chmod("./detail_document/" . $document->id, 0777);
+        // }
+
+        foreach ($_FILES["file"]["error"] as $key => $error) {
+            // return $request->file('file')[$key]->getClientMimeType();
+            if ($error == 0 && $request->file_note[$key] != null) {
+                $attachment = new Attachment;
+                $attachment->source_id = $document->id;
+                $attachment->type = "detail document";
+                $uploadedFile = $request->file('file')[$key];
+                $type = $uploadedFile->getClientMimeType();
+                $array_file = array(
+                    "application/msword",
+                    "application/pdf",
+                    "image/jpeg",
+                    "image/pjpeg",
+                    "image/png",
+                    "application/excel",
+                    "application/vnd.ms-excel",
+                    "application/x-excel",
+                    "application/x-msexcel",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    // 'application/zip',
+                    // 'application/x-zip-compressed',
+                    // 'multipart/x-zip',
+                    // 'application/x-compressed',
+                    // 'application/rar',
+                    // 'application/x-rar-compressed',
+                    // 'multipart/x-rar',
+                );
+
+                $name = $_FILES['file']['name'][$key];
+                $checkpdf = array_search($type, $array_file);
+                if ($checkpdf != "") {
+                    $pathpdf = Storage::put('detail_document/'.$document->id, $uploadedFile);
+                    $new_file_name = explode("/", $pathpdf);
+                    $tmp_name = $_FILES['file']['tmp_name'][$key];
+                    $attachment->link = $pathpdf;
+                    $attachment->description = $request->file_note[$key];
+                    $attachment->filename = $name;
+                }
+
+                $attachment->save();
+            }
+        }
+
+        return redirect("/view-document?id=".$request->document_id);
     }
 
     public function indexLokasi(Request $request)
     {
-        $lokasi = Storage::get();
+        $lokasi = MStorage::get();
         $level = LevelStorage::get();
         return view('index_lokasi',compact("lokasi", "level"));
     }
 
     public function editLokasi(Request $request)
     {
-        $document = Storage::find($request->id);
+        $document = MStorage::find($request->id);
         $level = LevelStorage::get();
         return view('edit_lokasi',compact("document", "level"));
     }
@@ -148,7 +204,7 @@ class Controller extends BaseController
     {
         // dd($request);
         // return $request;
-        $storage = Storage::find($request->id);
+        $storage = MStorage::find($request->id);
         $storage->name = $request->name;
         $storage->level = $request->level;
         $storage->code = $request->code;
@@ -161,7 +217,7 @@ class Controller extends BaseController
 
     public function listLokasi(Request $request)
     {
-        $storage = Storage::find($request->id);
+        $storage = MStorage::find($request->id);
         $data['name']           = $storage->name;
         $data['level']          = $storage->level;
         $data['code']           = $storage->code;
@@ -173,7 +229,7 @@ class Controller extends BaseController
     {
         // dd($request);
         // return $request;
-        Storage::find($request->id)->delete();
+        MStorage::find($request->id)->delete();
 
         return redirect("/lokasi");
     }
@@ -230,7 +286,7 @@ class Controller extends BaseController
         $document = Document::find($request->id);
         $detail_document = DetailDocument::where("document_id",$document->id)->get();
         $department = Department::get();
-        $lokasi = Storage::get();
+        $lokasi = MStorage::get();
         // return $request;
         // $data = [
         //     "document_id" => $document->id,
@@ -240,6 +296,27 @@ class Controller extends BaseController
         // $data = json_encode($data);
         $data = "http://localhost/digital-filling-document/public/view-document-direct?id=".$document->id;
         return view('qrcode_view_document',compact("document","detail_document","department","lokasi","data"));
+    }
+
+    public function fileAttachment(Request $request){
+        // return $request;
+        // return Attachment::where('source_id',$request->source_id)->where('type',$request->type)->get();
+
+        $data = [];
+
+        $attachment = Attachment::where('source_id',$request->source_id)->where('type',$request->type)->get();
+        foreach ($attachment as $key => $value)
+        {
+            // $url = Storage::url($value->link);
+            $arr = [
+                "file"        => '<a class="btn btn-info font_kecil" href="'.$value->link.'""><i class="fa fa-cloud-download"></i> </a>',
+                "description"    => $value->description,
+            ];
+            array_push($data, $arr);
+
+        }
+
+        return response()->json(['file' => $data]);
     }
 
 }

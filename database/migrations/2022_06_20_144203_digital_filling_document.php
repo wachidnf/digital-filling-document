@@ -70,7 +70,7 @@ class DigitalFillingDocument extends Migration
 
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->integer('detil_document_id');
+            $table->integer('source_id');
             $table->string('type');
             $table->string('filename');
             $table->text('link');

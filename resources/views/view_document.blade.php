@@ -154,6 +154,7 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                                     {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
+                                                    <a class="dropdown-item"  onclick="file('{{$value->id}}','detail document')">File</a>
                                                     <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
                                                     <a class="dropdown-item" href="delete-detail-document?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
                                                 </div>
@@ -173,38 +174,93 @@
 	</div>
 
     <div class="modal fade" id="ModalAddDetail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">ADD DETAIL DOCUMENT</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body">
-                    <input class="form-control" placeholder="" type="hidden" name="document_id" value="{{$document->id}}" id="document_id">
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Name</label>
-                        <div class="col-sm-12 col-md-10">
-                            <input class="form-control" placeholder="" type="text" name="name" value="" id="name">
+                <form method="post" action="{{ route('save-detail-document') }}" autocomplete="off" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">ADD DETAIL DOCUMENT</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" placeholder="" type="hidden" name="document_id" value="{{$document->id}}" id="document_id">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">Name</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input class="form-control" placeholder="" type="text" name="name" value="" id="name" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">No Referensi</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input class="form-control" placeholder="" type="text" name="no_referensi" value="" id="no_referensi" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">Catatan</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea class="form-control" name="catatan" id="catatan" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">File Lampiran</label>
+                            <div class="col-sm-12 col-md-10">
+                                <table class="table nowrap" id="table_file">
+                                    <thead>
+                                        <th style="width:40%">file</th>
+                                        <th>Note</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="baris">
+                                            <td>
+                                                <input class="form-control" placeholder="" type="file" name="file[]" value="" id="file">
+                                            </td>
+                                            <td>
+                                                <textarea class="form-control" name="file_note[]" id="file_note" style="height: 10%;"></textarea>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <td colspan="2" style="text-align: center">
+                                            <button type="button" class="btn btn-success" id="tambah_file"><i class="icon-copy fi-plus"> Tambah File</i></button>
+                                        </td>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">No Referensi</label>
-                        <div class="col-sm-12 col-md-10">
-                            <input class="form-control" placeholder="" type="text" name="no_referensi" value="" id="no_referensi">
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="save_detail">SIMPAN DETAIL</button>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Catatan</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea class="form-control" name="catatan" id="catatan"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="save_detail">SIMPAN DETAIL</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalFile" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true" style="overflow-y:auto;padding-top: 100px;">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 class="modal-title" id="myModalLabel"><span style="color: grey" id="modalfiletitle"></span></h3>
+        </div>
+        <form>
+            <div class="modal-body">
+                <div class="tab-pane table-responsive" id="tab_2">
+                <table id="file_attachment" class="table table-bordered bg-white mg-b-0 tx-center" style="font-size:15px; width: 100%; ">
+                    <thead class="head_table">
+                    <tr style="border: 1px solid black;">
+                        <td rowspan="" style="vertical-align: middle;">No</td>
+                        <td rowspan="" style="vertical-align: middle;">Foto</td>
+                        <td rowspan="" style="vertical-align: middle;">Note</td>
+                    </tr>
+                    </thead>
+                </table>
                 </div>
             </div>
+        </form>
+        </div>
         </div>
     </div>
 	<!-- js -->
@@ -212,6 +268,19 @@
 	<script src="vendors/scripts/script.min.js"></script>
 	<script src="vendors/scripts/process.js"></script>
 	<script src="vendors/scripts/layout-settings.js"></script>
+    <script src="src/plugins/datatables/js/jquery.dataTables.min.js"></script>
+	<script src="src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+	<script src="src/plugins/datatables/js/dataTables.responsive.min.js"></script>
+	<script src="src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+	<!-- buttons for Export datatable -->
+	<script src="src/plugins/datatables/js/dataTables.buttons.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.bootstrap4.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.print.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.html5.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.flash.min.js"></script>
+	<script src="src/plugins/datatables/js/pdfmake.min.js"></script>
+	<script src="src/plugins/datatables/js/vfs_fonts.js"></script>
+
     <script src="{{ url('/') }}/qrcode/build/qrcode.js"></script>
     <script src="{{ url('/') }}/qrcode/build/qrcode.min.js"></script>
     <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.js"></script>
@@ -232,29 +301,51 @@
             $("#ModalAddDetail").modal('show');
         });
 
-        $(document).on('click', '#save_detail', function() {
-            var url = "{{ url('/') }}/save-detail-document";
-            $.ajax({
-                type: 'post',
-                dataType: 'json',
-                url: url,
-                data: {
-                    name: $("#name").val(),
-                    no_referensi: $("#no_referensi").val(),
-                    catatan: $("#catatan").val(),
-                    document_id: $("#document_id").val(),
-                },
-                beforeSend: function() {
-                    // waitingDialog.show();
-                },
-                success: function(data) {
-                    window.location.reload();
-                },
-                complete: function() {
-                    // waitingDialog.hide();
-                },
-            });
+        var t = $('#table_file').DataTable({
+            autoWidth: false,
+            paging:false,
+            ordering:false,
+            searching:false
+            // columnDefs: [
+            //     {
+            //         "targets": 3,
+            //         "className": "text-center",
+            //         // "width": "4%"
+            //     },
+            // ],
         });
+        $(document).on('click', '#tambah_file', function() {
+            t.row.add( [
+                "<input class='form-control' placeholder='' type='file' name='file[]' value='' id='file'>",
+                "<textarea class='form-control' name='file_note[]' id='file_note' style='height: 10%;'></textarea>",
+            ] ).draw( false );
+            $("#table_file").find('tr').addClass('baris');
+        });
+
+        // $(document).on('click', '#save_detail', function() {
+        //     var url = "{{ url('/') }}/save-detail-document";
+        //     $.ajax({
+        //         type: 'post',
+        //         dataType: 'json',
+        //         url: url,
+        //         data: {
+        //             name: $("#name").val(),
+        //             no_referensi: $("#no_referensi").val(),
+        //             catatan: $("#catatan").val(),
+        //             document_id: $("#document_id").val(),
+        //         },
+        //         beforeSend: function() {
+        //             // waitingDialog.show();
+        //         },
+        //         success: function(data) {
+        //             window.location.reload();
+        //         },
+        //         complete: function() {
+        //             // waitingDialog.hide();
+        //         },
+        //     });
+        // });
+
         function cetak(uuid){
             // $("#table_qrcode").on('click', '.cetak', function() {
             // console.log($(this).parents(".test").find(".qr").html());
@@ -284,6 +375,56 @@
 
             //     // return true;
         };
+
+        $('#file_attachment').DataTable({
+            "paging":false,
+            "destroy": true,
+            "columns":[
+                    {data:"no",name:"no"},
+                    {data:"file",name:"file"},
+                    {data:"description",name:"description"},
+            ],
+            "order": [[ 0, 'asc' ]]
+        });
+
+        function file(source_id,type){
+        var url = "{{ url('/')}}/file_attachment";
+        $('#file_attachment').DataTable().clear().draw();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: url,
+            data: {
+                source_id : source_id,
+                type : type,
+            },
+            // beforeSend: function() {
+            //     waitingDialog.show();
+            // },
+            success: function(data) {
+                if (data.file.length > 0) {
+                  // console.log(data);
+                    $(data.file).each(function(i, v) {
+                      // console.log(v.status);
+                        var ItemTable = {
+                            no: i+1,
+                            file: v.file,
+                            description: v.description,
+
+                        };
+                        $('#file_attachment').DataTable().row.add(ItemTable);
+                    });
+                }
+                // $('#modalfiletitle').text("File Lampiran");
+                $('#file_attachment').DataTable().draw();
+                // $('#index_detail').DataTable().columns.adjust();
+            },
+            // complete: function() {
+            //     waitingDialog.hide();
+            // }
+        });
+        $("#ModalFile").modal('show');
+    }
     </script>
 </body>
 </html>
