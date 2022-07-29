@@ -24,14 +24,14 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin123'),
         ]);
 
-        DB::table('storages')->insert([
+        DB::table('m_storages')->insert([
             'name' => "Gudang 1",
             'code' => "G1",
             'level' => 2,
             'description' => "Gudang 1",
         ]);
 
-        DB::table('storages')->insert([
+        DB::table('m_storages')->insert([
             'name' => "Gudang 2",
             'code' => "G2",
             'level' => 1,
