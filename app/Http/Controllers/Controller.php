@@ -14,8 +14,14 @@ use App\Models\MStorage;
 use App\Models\Department;
 use App\Models\LevelStorage;
 use App\Models\Attachment;
+use App\Models\Project;
+use App\Models\Pt;
+use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Support\Facades\Crypt;
 use Storage;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class Controller extends BaseController
 {
@@ -27,8 +33,22 @@ class Controller extends BaseController
     // }
     public function indexDocument(Request $request)
     {
-        $document = Document::get();
-        return view('index_document',compact("document"));
+        $user = \Auth::user();
+        $project = [];
+        $pt = [];
+        $department = [];
+        foreach ($user->detail as $key => $value) {
+            # code...
+            // array_push($project, $value->project_id);
+            array_push($pt, $value->pt_id);
+            array_push($department, $value->department_id);
+        }
+        if($user->level == "admin"){
+            $document = Document::get();
+        }else{
+            $document = Document::whereIn("department_id",$department)->get();
+        }
+        return view('index_document',compact("document","user"));
     }
 
     public function createDocument(Request $request)
@@ -36,7 +56,9 @@ class Controller extends BaseController
         // $document = Document::all();
         $department = Department::get();
         $lokasi = MStorage::get();
-        return view('create_document',compact("department","lokasi"));
+        $project = Project::get();
+        $pt = Pt::get();
+        return view('create_document',compact("department","lokasi","project","pt"));
     }
 
     public function editDocument(Request $request)
@@ -45,17 +67,45 @@ class Controller extends BaseController
         $document = Document::find($request->id);
         $department = Department::get();
         $lokasi = MStorage::get();
-        return view('edit_document',compact("department","lokasi","document"));
+        $project = Project::get();
+        $pt = Pt::get();
+        return view('edit_document',compact("department","lokasi","document","project","pt"));
     }
 
     public function saveDocument(Request $request)
     {
         // dd($request);
+        $roman         = [
+            '01' => 'I',
+            '02' => 'II',
+            '03' => 'III',
+            '04' => 'IV',
+            '05' => 'V',
+            '06' => 'VI',
+            '07' => 'VII',
+            '08' => 'VIII',
+            '09' => 'IX',
+            '10' => 'X',
+            '11' => 'XI',
+            '12' => 'XII',
+        ];
+
+        $document_lama = Document::where("project_id", $request->project)->get();
+        $department = Department::find($request->department);
+        $bulan      = $roman[\Carbon\Carbon::now()->format('m')];
+        $tahun      = \Carbon\Carbon::now()->format('Y');
+        $project    = Project::find($request->project);
+        $pt         = Pt::find($request->pt);
+        // 0136/TENDER/CD/VI/2022/CGSDJ/CFAT
+        $no = (count($document_lama)+1).'/'.'DOC'.'/'.$department->code.'/'.$bulan.'/'.$tahun .'/'.$project->code.'/'.$pt->code;
+
         $document = new Document;
         $document->process_date = $request->tgl_process;
         $document->seq_no = $request->seq_nomor;
-        $document->document_no = $request->no_dokumen;
+        $document->document_no = $no;
         $document->department_id = $request->department;
+        $document->project_id = $request->project;
+        $document->pt_id = $request->pt;
         $document->description = $request->keterangan;
         $document->storage_id = $request->lokasi;
         $document->save();
@@ -84,6 +134,9 @@ class Controller extends BaseController
         $detail_document = DetailDocument::where("document_id",$document->id)->get();
         $department = Department::get();
         $lokasi = MStorage::get();
+        $project = Project::get();
+        $pt = Pt::get();
+        // return $pt;
         // return $request;
         // $data = [
         //     "document_id" => $document->id,
@@ -91,8 +144,8 @@ class Controller extends BaseController
         //     "url" => "http://localhost/digital-filling-document/public/view-document?id=".$document->id,
         // ];
         // $data = json_encode($data);
-        $data = "http://localhost/digital-filling-document/public/view-document-direct?id=".$document->id;
-        return view('view_document',compact("document","detail_document","department","lokasi","data"));
+        $data = "https://digfil.citragran.com/view-document-direct?id=".$document->id;
+        return view('view_document',compact("document","detail_document","department","lokasi","data","project","pt"));
     }
 
     public function deleteDocument(Request $request)
@@ -172,8 +225,29 @@ class Controller extends BaseController
         return redirect("/view-document?id=".$request->document_id);
     }
 
+    public function dataDetailDocument(Request $request)
+    {
+        $detail_document = DetailDocument::find($request->id);
+        // $data['name']   = $department->name;
+        // $data['code']   = $department->code;
+        return response()->json(["data" => $detail_document]);
+    }
+
+    public function editDetailDocument(Request $request)
+    {
+        $detail_document = DetailDocument::find($request->edit_detail_document_id);
+        $detail_document->reference_no = $request->edit_no_referensi;
+        $detail_document->name = $request->edit_name;
+        $detail_document->notes = $request->edit_catatan;
+        $detail_document->save();
+
+        return redirect("/view-document?id=".$detail_document->document_id);
+    }
+
+
     public function indexLokasi(Request $request)
     {
+        $user = \Auth::user();
         $lokasi = MStorage::get();
         $level = LevelStorage::get();
         return view('index_lokasi',compact("lokasi", "level"));
@@ -340,6 +414,126 @@ class Controller extends BaseController
         // $file = public_path() . "/" . str_replace("public", "", $attachment->filenames);
         // return response()->download($file, $name, $headers);
         return Storage::download($attachment->link, $name);
+    }
+
+    public function indexUser(Request $request)
+    {
+        $user = User::get();
+
+        return view('index_user',compact("user"));
+    }
+
+    public function saveUser(Request $request)
+    {
+        // return $request;
+        $document = new User;
+        $document->username = $request->username;
+        $document->name = $request->username;
+        $document->email = $request->email;
+        $document->password = Hash::make($request->password);
+        $document->save();
+
+        return response()->json(['status'=>1]);
+    }
+
+    public function editUser(Request $request)
+    {
+        $user = User::find($request->id);
+        $department = Department::get();
+        $project = Project::get();
+        $pt = Pt::get();
+
+        return view('edit_user',compact("user","department","project","pt"));
+    }
+
+    public function deleteUser(Request $request)
+    {
+        $user = User::find($request->id);
+        foreach ($user->detail as $key => $value) {
+            # code...
+            $value->delete();
+        }
+        $user->delete();
+        return redirect("/user");
+    }
+
+    public function saveUserDetail(Request $request)
+    {
+        // return $request;
+        $document = new UserDetail;
+        $document->user_id = $request->user_id;
+        $document->project_id = $request->project;
+        $document->pt_id = $request->pt;
+        $document->department_id = $request->department;
+        $document->save();
+
+        return redirect("/edit-user?id=".$request->user_id);
+    }
+
+    public function deleteDetailUser(Request $request)
+    {
+        $detail_user = UserDetail::find($request->id);
+        UserDetail::find($request->id)->delete();
+
+        return redirect("/edit-user?id=".$detail_user->user_id);
+    }
+
+    public function getUserCpms(Request $request)
+    {
+        $dataValidasi = (object) [];
+        $dataValidasi->token = "c1nt4cpms";
+        $dataValidasi->project_id = 3;
+        $url = "https://cpms.ciputragroup.com:81/api/usercpms";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $dataValidasi);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataValidasi);
+
+        $data = curl_exec($ch);
+        $data = json_decode($data);
+
+        // dd($data->data);
+        DB::beginTransaction();
+        try {
+            foreach($data->data as $key => $value){
+                if($value->email != null){
+                    $user = User::where("email", $value->email)->first();
+                    if($user == null){
+                        $user = new User;
+                        $user->username = $value->user_name;
+                        $user->name = $value->user_name;
+                        $user->email = $value->email;
+                        $user->password = Hash::make("sungairaya");
+                        $user->save();
+                    }
+                    $project = Project::where("name", $value->project_name)->first();
+                    $pt = Pt::where("name", $value->pt_name)->first();
+                    $department = Department::where("name", $value->departemen_name)->first();
+                    if($project != null && $pt != null && $department != null){
+                        $cek_user_detail = UserDetail::where("user_id", $user->id)->where("project_id", $project->id)->where("pt_id", $pt->id)->where("department_id", $department->id)->first();
+                        if($cek_user_detail == null){
+                            $user_detail = new UserDetail;
+                            $user_detail->user_id = $user->id;
+                            $user_detail->project_id = $project->id;
+                            $user_detail->pt_id = $pt->id;
+                            $user_detail->department_id = $department->id;
+                            $user_detail->save();
+                        }
+                    }
+                    // dd($value);
+                }
+            }
+            DB::commit();
+        } catch (Exception $e) {
+            return $e;
+        }
+
+        return "success";
     }
 
 }

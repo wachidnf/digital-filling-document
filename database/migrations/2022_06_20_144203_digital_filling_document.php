@@ -22,6 +22,7 @@ class DigitalFillingDocument extends Migration
             $table->string('password');
             $table->integer('project_id')->nullable();
             $table->integer('department_id')->nullable();
+            $table->integer('level')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -45,6 +46,8 @@ class DigitalFillingDocument extends Migration
             $table->string('seq_no');
             $table->string('document_no');
             $table->integer('department_id');
+            $table->integer('project_id');
+            $table->integer('pt_id');
             $table->text('description');
             $table->integer('storage_id');
             $table->timestamps();
@@ -110,6 +113,30 @@ class DigitalFillingDocument extends Migration
             $table->id();
             $table->string('code');
             $table->string('name');
+            $table->integer('project_id');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
+        });
+
+        Schema::create('pts', function (Blueprint $table) {
+            $table->id();
+            $table->string('code');
+            $table->string('name');
+            $table->integer('pt_id');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
+        });
+
+        Schema::create('project_pts', function (Blueprint $table) {
+            $table->id();
+            $table->string('project_id');
+            $table->string('pt_id');
             $table->timestamps();
             $table->softDeletes();
             $table->integer('created_by')->nullable();
@@ -122,6 +149,7 @@ class DigitalFillingDocument extends Migration
             $table->string('user_id');
             $table->string('department_id')->nullable();
             $table->string('project_id')->nullable();
+            $table->string('pt_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->integer('created_by')->nullable();
@@ -156,6 +184,7 @@ class DigitalFillingDocument extends Migration
         Schema::dropIfExists('departments');
         Schema::dropIfExists('session_logins');
         Schema::dropIfExists('projects');
+        Schema::dropIfExists('pts');
         Schema::dropIfExists('user_details');
         Schema::dropIfExists('level_storages');
     }

@@ -63,10 +63,32 @@
 								<input class="form-control" placeholder="" type="text" name="seq_nomor">
 							</div>
 						</div>
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">No Dokumen</label>
 							<div class="col-sm-12 col-md-10">
 								<input class="form-control" value="" type="text" name="no_dokumen">
+							</div>
+						</div> --}}
+                        <div class="form-group row">
+							<label class="col-sm-12 col-md-2 col-form-label">Project</label>
+							<div class="col-sm-12 col-md-10">
+								<select class="custom-select col-12" name="project">
+									<option disabled selected>Pilih Project...</option>
+                                    @foreach ($project as $key => $value)
+                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                    @endforeach
+								</select>
+							</div>
+						</div>
+                        <div class="form-group row">
+							<label class="col-sm-12 col-md-2 col-form-label">Pt</label>
+							<div class="col-sm-12 col-md-10">
+								<select class="custom-select col-12" name="pt">
+									<option disabled selected>Pilih Pt...</option>
+                                    @foreach ($pt as $key => $value)
+                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                    @endforeach
+								</select>
 							</div>
 						</div>
                         <div class="form-group row">

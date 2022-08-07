@@ -14,12 +14,22 @@ class Document extends Model
 
     public function lokasi()
     {
-        return $this->belongsTo('App\Models\Storage');
+        return $this->belongsTo('App\Models\MStorage',"storage_id","id");
     }
 
     public function department()
     {
         return $this->belongsTo('App\Models\Department');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo('App\Models\Project');
+    }
+
+    public function pt()
+    {
+        return $this->belongsTo('App\Models\Pt');
     }
 
     public function getIdEncryptAttribute(){

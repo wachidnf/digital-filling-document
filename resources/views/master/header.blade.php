@@ -1,7 +1,7 @@
 <head>
 	<!-- Basic Page Info -->
 	<meta charset="utf-8">
-	<title>DeskApp - Bootstrap Admin Dashboard HTML Template</title>
+	<title>DigFil</title>
 
 	<!-- Site favicon -->
 	<link rel="apple-touch-icon" sizes="180x180" href="vendors/images/apple-touch-icon.png">
@@ -44,7 +44,7 @@
 </div> --}}
 <div class="header">
     <div class="header-left">
-        <div class="menu-icon dw dw-menu"></div>
+        {{-- <div class="menu-icon dw dw-menu"></div>
         <div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
         <div class="header-search">
             <form>
@@ -81,18 +81,18 @@
                     </div>
                 </div>
             </form>
-        </div>
+        </div> --}}
     </div>
     <div class="header-right">
         <div class="dashboard-setting user-notification">
-            <div class="dropdown">
+            {{-- <div class="dropdown">
                 <a class="dropdown-toggle no-arrow" href="javascript:;" data-toggle="right-sidebar">
                     <i class="dw dw-settings2"></i>
                 </a>
-            </div>
+            </div> --}}
         </div>
         <div class="user-notification">
-            <div class="dropdown">
+            {{-- <div class="dropdown">
                 <a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
                     <i class="icon-copy dw dw-notification"></i>
                     <span class="badge notification-active"></span>
@@ -145,7 +145,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="user-info-dropdown">
             <div class="dropdown">
@@ -153,12 +153,12 @@
                     <span class="user-icon">
                         <img src="vendors/images/photo1.jpg" alt="">
                     </span>
-                    <span class="user-name">Ross C. Lopez</span>
+                    <span class="user-name">{{ \Auth::user()->username }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                    <a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>
+                    {{-- <a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>
                     <a class="dropdown-item" href="profile.html"><i class="dw dw-settings2"></i> Setting</a>
-                    <a class="dropdown-item" href="faq.html"><i class="dw dw-help"></i> Help</a>
+                    <a class="dropdown-item" href="faq.html"><i class="dw dw-help"></i> Help</a> --}}
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="dropdown-item"><i class="dw dw-logout"></i> Log Out</button>
@@ -167,7 +167,9 @@
             </div>
         </div>
         <div class="github-link">
-            <a href="https://github.com/dropways/deskapp" target="_blank"><img src="vendors/images/github.svg" alt=""></a>
+            {{-- <a href="https://github.com/dropways/deskapp" target="_blank"><img src="vendors/images/github.svg" alt=""></a> --}}
+            <a target="_blank"><img src="vendors/images/github.svg" alt=""></a>
+
         </div>
     </div>
 </div>

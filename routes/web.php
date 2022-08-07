@@ -43,6 +43,8 @@ Route::get('/dashboard', function () {
     Route::get('/view-document', 'Controller@viewDocument')->middleware(['auth'])->name('view-document');
     Route::get('/delete-document', 'Controller@deleteDocument')->middleware(['auth'])->name('delete-document');
     Route::post('/save-detail-document', 'Controller@saveDetailDocument')->middleware(['auth'])->name('save-detail-document');
+    Route::post('/data-detail-document', 'Controller@dataDetailDocument')->middleware(['auth'])->name('data-detail-document');
+    Route::post('/edit-detail-document', 'Controller@editDetailDocument')->middleware(['auth'])->name('edit-detail-document');
 
     Route::get('/lokasi', 'Controller@indexLokasi')->middleware(['auth'])->name('lokasi');
     Route::post('/save-lokasi', 'Controller@saveLokasi')->middleware(['auth'])->name('save-lokasi');
@@ -62,6 +64,16 @@ Route::get('/dashboard', function () {
     Route::post('/file_attachment', 'Controller@fileAttachment')->name('file_attachment');
     Route::get('/download-file', 'Controller@downloadFile')->name('download-file');
 
+    Route::get('/user', 'Controller@indexUser')->middleware(['auth'])->name('user');
+    Route::post('/save-user', 'Controller@saveUser')->middleware(['auth'])->name('save-user');
+    Route::post('/save-detail-user', 'Controller@saveUserDetail')->middleware(['auth'])->name('save-detail-user');
+    Route::get('/edit-user', 'Controller@editUser')->middleware(['auth'])->name('edit-user');
+    Route::post('/update-user', 'Controller@updateUser')->middleware(['auth'])->name('update-user');
+    Route::get('/delete-user', 'Controller@deleteUser')->middleware(['auth'])->name('delete-user');
+    // Route::post('/delete-user', 'Controller@deleteUser')->middleware(['auth'])->name('delete-user');
+    Route::get('/delete-detail-user', 'Controller@deleteDetailUser')->middleware(['auth'])->name('delete-detail-user');
+
+    Route::get('/get-usercpms', 'Controller@getUserCpms')->middleware(['auth'])->name('get-usercpms');
 // });
 
 require __DIR__.'/auth.php';

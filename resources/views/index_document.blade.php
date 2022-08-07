@@ -9,7 +9,7 @@
 	<div class="mobile-menu-overlay"></div>
 
 	<div class="main-container">
-		<div class="pd-ltr-20 xs-pd-20-10">
+		<div class="pd-ltr-20 xs-pd-20-10" style="display: inline-grid;width: 100%;">
 			<div class="min-height-200px">
 				{{-- <div class="page-header">
 					<div class="row">
@@ -51,8 +51,8 @@
                             {{-- <button class="btn btn-primary" type="button">SYNCH</button>
                             <button class="btn btn-primary" type="button">SEND</button> --}}
                         </div>
-						<table class="table nowrap" id="index_document">
-							<thead>
+						<table class="table nowrap" id="index_document" style="width: 100%">
+							<thead style="width: 100%">
 								<tr>
                                     <th>No</th>
 									{{-- <th>
@@ -63,6 +63,7 @@
 									</th> --}}
 									<th>Department</th>
 									<th>No. Dokumen</th>
+                                    <th>Lokasi</th>
 									<th>Seq Number</th>
 									<th>Tgl Proses</th>
 									<th>Keterangan</th>
@@ -70,13 +71,14 @@
                                     <th>action</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody style="width: 100%">
                                 @foreach ($document as $key => $value)
                                     <tr>
                                         <td>{{$key+1}}</td>
                                         {{-- <td><input type="checkbox" name="select_one" value="1" id="example-select-one"></td> --}}
                                         <td>{{$value->department->name}}</td>
                                         <td>{{$value->document_no}}</td>
+                                        <td>{{ $value->lokasi->level_storages->name  }} - {{$value->lokasi->name}}</td>
                                         <td>{{$value->seq_no}}</td>
                                         <td>{{$value->process_date}}</td>
                                         <td>{{$value->description}}</td>
@@ -125,12 +127,12 @@
 	<script src="src/plugins/datatables/js/vfs_fonts.js"></script>
 	<!-- Datatable Setting js -->
 	<script src="vendors/scripts/datatable-setting.js"></script></body>
-
+{{--
     <script src="{{ url('/') }}/qrcode/build/qrcode.js"></script>
     <script src="{{ url('/') }}/qrcode/build/qrcode.min.js"></script>
     <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.js"></script>
-    <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.min.js"></script>
-
+    <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.min.js"></script> --}}
+    @include("qrcode_app")
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -154,40 +156,40 @@
                         var html = "";
                         QRCode.toString(data, function (err, string) {
                             if (err) throw err
-                            html += "<div style='width:100%;display: inline-block;margin:auto' class='qrcode' data-link='"+data+"'>"+string+"</div>"
+                            html += "<div style='width:100%;display: inline-block;margin:auto' class='qrcode' data-link='"+data+"' data-department='"+row[1]+"' data-nodoc='"+row[2]+"' data-lokasi='"+row[3]+"'>"+string+"</div>"
                         })
                         return html;
                     },
-                    "targets" : 6,
+                    "targets" : 7,
 
                 },
             ],
         });
 
-        $(document).on('click', '.qrcode', function() {
-            QRCode.toString($(this).attr("data-link"), function (err, string) {
-                if (err) throw err
-                var mywindow = window.open("", "PRINT", "height=400,width=600");
-                mywindow.document.write("<html><head>");
-                mywindow.document.write("</head><body >");
-                // mywindow.document.write("<h1>" + document.title  + "</h1>");
-                mywindow.document.write("<row>");
-                // for (i = 0; i < 10; i++) {
-                // mywindow.document.write("<div style='display: inline-block'><div style='width:2300px;height:1550px;border: 2px dashed black;margin: 10px;display: flex'>");
-                // mywindow.document.write("<div  style='width:1000px;display: inline-block'>"+
-                // "<div style='width:100%;height:500px;padding-top:20px;padding-left:10px;margin:auto'><img class='img img-responsive' src='{{ url('/') }}/assets/dist/img/logo-ciputra_original_old2.png' style='width:100%'></div>"+
-                // "<div style='width:100$;padding:10px'><h2 style='margin: 0 auto;text-align: left'><label>Unit:</label><br><br><label>Kawasan:</label><br><br><br></h2></div></div>");
-                mywindow.document.write("<div style='width:500px;display: inline-block;margin:auto'>"+string+"</div>");
-                // mywindow.document.write("</div></div>");
-                // }
-                mywindow.document.write("</row>");
-                mywindow.document.write("</body></html>");
-                mywindow.document.close(); // necessary for IE >= 10
-                mywindow.focus(); // necessary for IE >= 10*/
-                mywindow.print();
-                console.log(string)
-            })
-        });
+        // $(document).on('click', '.qrcode', function() {
+        //     QRCode.toString($(this).attr("data-link"), function (err, string) {
+        //         if (err) throw err
+        //         var mywindow = window.open("", "PRINT", "height=400,width=600");
+        //         mywindow.document.write("<html><head>");
+        //         mywindow.document.write("</head><body >");
+        //         // mywindow.document.write("<h1>" + document.title  + "</h1>");
+        //         mywindow.document.write("<row>");
+        //         // for (i = 0; i < 10; i++) {
+        //         // mywindow.document.write("<div style='display: inline-block'><div style='width:2300px;height:1550px;border: 2px dashed black;margin: 10px;display: flex'>");
+        //         // mywindow.document.write("<div  style='width:1000px;display: inline-block'>"+
+        //         // "<div style='width:100%;height:500px;padding-top:20px;padding-left:10px;margin:auto'><img class='img img-responsive' src='{{ url('/') }}/assets/dist/img/logo-ciputra_original_old2.png' style='width:100%'></div>"+
+        //         // "<div style='width:100$;padding:10px'><h2 style='margin: 0 auto;text-align: left'><label>Unit:</label><br><br><label>Kawasan:</label><br><br><br></h2></div></div>");
+        //         mywindow.document.write("<div style='width:500px;display: inline-block;margin:auto'>"+string+"</div>");
+        //         // mywindow.document.write("</div></div>");
+        //         // }
+        //         mywindow.document.write("</row>");
+        //         mywindow.document.write("</body></html>");
+        //         mywindow.document.close(); // necessary for IE >= 10
+        //         mywindow.focus(); // necessary for IE >= 10*/
+        //         mywindow.print();
+        //         console.log(string)
+        //     })
+        // });
 
     </script>
 </html>

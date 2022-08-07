@@ -1,8 +1,8 @@
 <div class="left-side-bar">
     <div class="brand-logo">
-        <a href="index.html">
-            <img src="vendors/images/deskapp-logo.svg" alt="" class="dark-logo">
-            <img src="vendors/images/deskapp-logo-white.svg" alt="" class="light-logo">
+        <a>
+            <img src="" alt="" class="dark-logo">
+            <img src="" alt="" class="light-logo">
         </a>
         <div class="close-sidebar" data-toggle="left-sidebar-close">
             <i class="ion-close-round"></i>
@@ -29,6 +29,9 @@
                         <li><a href="document">Document</a></li>
                         <li><a href="lokasi">Lokasi</a></li>
                         <li><a href="department">Department</a></li>
+                        @if (\Auth::user()->level == "admin")
+                            <li><a href="user">User</a></li>
+                        @endif
                     </ul>
                 </li>
                 {{-- <li class="dropdown">
