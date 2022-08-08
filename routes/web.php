@@ -74,6 +74,13 @@ Route::get('/dashboard', function () {
     Route::get('/delete-detail-user', 'Controller@deleteDetailUser')->middleware(['auth'])->name('delete-detail-user');
 
     Route::get('/get-usercpms', 'Controller@getUserCpms')->middleware(['auth'])->name('get-usercpms');
+
+
+    Route::get('/media', 'Controller@indexMedia')->middleware(['auth'])->name('media');
+    Route::post('/save-media', 'Controller@saveMedia')->middleware(['auth'])->name('save-media');
+    Route::get('/delete-media', 'Controller@deleteMedia')->middleware(['auth'])->name('delete-media');
+    Route::post('/list-media', 'Controller@listMedia')->middleware(['auth'])->name('list-media');
+    Route::post('/update-media', 'Controller@updateMedia')->middleware(['auth'])->name('update-media');
 // });
 
 require __DIR__.'/auth.php';

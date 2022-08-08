@@ -22,7 +22,7 @@ class DigitalFillingDocument extends Migration
             $table->string('password');
             $table->integer('project_id')->nullable();
             $table->integer('department_id')->nullable();
-            $table->integer('level')->nullable();
+            $table->string('level')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

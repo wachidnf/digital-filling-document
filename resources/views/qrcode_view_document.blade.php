@@ -43,7 +43,7 @@
 				<div class="pd-20 card-box mb-30">
 					<div class="clearfix">
 						<div class="pull-left">
-							<h4 class="text-blue h4">ADD DOKUMEN FILE</h4>
+							<h4 class="text-blue h4">VIEW DOKUMEN FILE</h4>
 							{{-- <p class="mb-30">All bootstrap element classies</p> --}}
                             {{-- <button class="btn btn-primary" type="button" id="add_lokasi" onclick="cetak('{{$data}}')">QRCODE</button> --}}
 						</div>
@@ -139,7 +139,7 @@
                                     <th>Name</th>
 									<th>No Referensi</th>
 									<th>Catatan</th>
-                                    <th>Action</th>
+                                    {{-- <th>Action</th> --}}
 								</tr>
 							</thead>
 							<tbody>
@@ -148,18 +148,15 @@
                                         <td>{{$value->name}}</td>
                                         <td>{{$value->reference_no}}</td>
                                         <td>{{$value->notes}}</td>
-                                        <td>
+                                        {{-- <td>
                                             <div class="dropdown">
                                                 <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                                                     <i class="dw dw-more"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                                    {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
-                                                    {{-- <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                                                    <a class="dropdown-item" href="delete-detail-document?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a> --}}
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -177,7 +174,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">ADD DETAIL DOCUMENT</h4>
+                    <h4 class="modal-title" id="myLargeModalLabel">VIEW DETAIL DOCUMENT</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
@@ -201,10 +198,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                {{-- <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="save_detail">SIMPAN DETAIL</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

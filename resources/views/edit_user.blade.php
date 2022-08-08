@@ -134,7 +134,7 @@
                 <form method="post" action="{{ route('save-detail-user') }}" autocomplete="off" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myLargeModalLabel">ADD DETAIL DOCUMENT</h4>
+                        <h4 class="modal-title" id="myLargeModalLabel">ADD DETAIL USER</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class="modal-body">

@@ -244,6 +244,50 @@ class Controller extends BaseController
         return redirect("/view-document?id=".$detail_document->document_id);
     }
 
+    public function indexMedia(Request $request)
+    {
+        $user = \Auth::user();
+        $level = LevelStorage::get();
+        return view('index_media',compact("level"));
+    }
+
+    public function updateMedia(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        $media = LevelStorage::find($request->id);
+        $media->name = $request->name;
+        $media->save();
+
+        return response()->json(['status'=>1]);
+    }
+
+    public function listMedia(Request $request)
+    {
+        $media          = LevelStorage::find($request->id);
+        $data['name']   = $media->name;
+        return response()->json($data);
+    }
+
+    public function deleteMedia(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        LevelStorage::find($request->id)->delete();
+
+        return redirect("/media");
+    }
+
+    public function saveMedia(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        $media = new LevelStorage;
+        $media->name = $request->name;
+        $media->save();
+
+        return response()->json(['status'=>1]);
+    }
 
     public function indexLokasi(Request $request)
     {
@@ -264,7 +308,7 @@ class Controller extends BaseController
     {
         // dd($request);
         // return $request;
-        $document = new Storage;
+        $document = new MStorage;
         $document->name = $request->name;
         $document->level = $request->level;
         $document->code = $request->code;

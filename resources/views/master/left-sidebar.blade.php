@@ -29,6 +29,7 @@
                         <li><a href="document">Document</a></li>
                         <li><a href="lokasi">Lokasi</a></li>
                         <li><a href="department">Department</a></li>
+                        <li><a href="media">Tempat File</a></li>
                         @if (\Auth::user()->level == "admin")
                             <li><a href="user">User</a></li>
                         @endif

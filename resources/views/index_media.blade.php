@@ -41,11 +41,11 @@
 				<!-- Checkbox select Datatable start -->
 				<div class="card-box mb-30">
 					<div class="pd-20">
-						<h4 class="text-blue h4">LOKASI</h4>
+						<h4 class="text-blue h4">TEMPAT FILE / MEDIA</h4>
 					</div>
 					<div class="pb-20">
                         <div class="btn-list">
-                            <button class="btn btn-primary" type="button" id="add_lokasi">ADD LOKASI</button>
+                            <button class="btn btn-primary" type="button" id="add_media">ADD MEDIA</button>
                             {{-- <button class="btn btn-primary" type="button">EDIT</button>
                             <button class="btn btn-primary" type="button">DELETE</button> --}}
                             {{-- <button class="btn btn-primary" type="button">SYNCH</button>
@@ -61,31 +61,25 @@
 											<span class="dt-checkbox-label"></span>
 										</div>
 									</th> --}}
-									{{-- <th>Department</th> --}}
-									<th>Lokasi</th>
-                                    <th>Code</th>
-                                    <th>Tempat File</th>
-                                    <th>Keterangan</th>
+									<th>Name</th>
+                                    {{-- <th>Keterangan</th> --}}
                                     <th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
-                                @foreach ($lokasi as $key => $value)
+                                @foreach ($level as $key => $value)
                                     <tr>
                                         <td>{{$key+1}}</td>
                                         <td>{{$value->name}}</td>
-                                        <td>{{$value->code}}</td>
-                                        <td>{{ $value->level_storages->name }}</td>
-                                        <td>{{$value->description}}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                                                     <i class="dw dw-more"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                                    <a class="dropdown-item" href="edit-lokasi?id={{$value->id}}"><i class="dw dw-eye"></i> Edit</a>
-                                                    {{-- <a class="dropdown-item" href="#" id="edit_lokasi" data-id="{{ $value->id }}"><i class="dw dw-edit2"></i> Edit</a> --}}
-                                                    <a class="dropdown-item" href="delete-lokasi?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
+                                                    {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
+                                                    <a class="dropdown-item" href="#" id="edit_media" data-id="{{ $value->id }}"><i class="dw dw-edit2"></i> Edit</a>
+                                                    <a class="dropdown-item" href="delete-media?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -103,85 +97,61 @@
 		</div>
 	</div>
 
-    <div class="modal fade" id="ModalAddLokasi" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ModalAddMedia" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">ADD LOKASI DOCUMENT</h4>
+                    <h4 class="modal-title" id="myLargeModalLabel">ADD MEDIA</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
                     {{-- <input class="form-control" placeholder="" type="hidden" name="document_id" value="{{$document->id}}" id="document_id"> --}}
                     <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Lokasi</label>
+                        <label class="col-sm-12 col-md-2 col-form-label">Name</label>
                         <div class="col-sm-12 col-md-10">
-                            <input class="form-control" placeholder="" type="text" name="lokasi" value="" id="lokasi">
+                            <input class="form-control" placeholder="" type="text" name="name" value="" id="name">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Code</label>
-                        <div class="col-sm-12 col-md-10">
-                            <input class="form-control" placeholder="" type="text" name="code" value="" id="code">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Lokasi File</label>
-                        <div class="col-sm-12 col-md-10">
-                            <select class="custom-select col-12" name="level" id="level">
-                                <option disabled selected>-- Pilih Lokasi File --</option>
-                                @foreach ($level as $key => $value)
-                                    <option value="{{$value->id}}">{{$value->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
                         <div class="col-sm-12 col-md-10">
                             <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="save_lokasi">SIMPAN LOKASI</button>
+                    <button type="button" class="btn btn-primary" id="save_media">SIMPAN MEDIA</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="ModalEditLokasi" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ModalEditMedia" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">EDIT LOKASI DOCUMENT</h4>
+                    <h4 class="modal-title" id="myLargeModalLabel">EDIT MEDIA</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
                     {{-- <input class="form-control" placeholder="" type="hidden" name="document_id" value="{{$document->id}}" id="document_id"> --}}
                     <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Lokasi</label>
+                        <label class="col-sm-12 col-md-2 col-form-label">Name</label>
                         <div class="col-sm-12 col-md-10">
-                            <input class="form-control" placeholder="" type="hidden" name="id_lokasi" id="id_lokasi">
-                            <input class="form-control" placeholder="" type="text" name="lokasi_edit" value="" id="lokasi_edit">
+                            <input type="hidden" id="id_media" name="id_media">
+                            <input class="form-control" placeholder="" type="text" name="edit_name" value="" id="edit_name">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-md-2 col-form-label">Code</label>
-                        <div class="col-sm-12 col-md-10">
-                            <input class="form-control" placeholder="" type="text" name="edit_code" value="" id="edit_code">
-                        </div>
-                    </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
                         <div class="col-sm-12 col-md-10">
-                            <textarea class="form-control" name="edit_keterangan" id="edit_keterangan"></textarea>
+                            <textarea class="form-control" name="keterangan" id="keterangan"></textarea>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="update_lokasi">SIMPAN LOKASI</button>
+                    <button type="button" class="btn btn-primary" id="update_media">SIMPAN MEDIA</button>
                 </div>
             </div>
         </div>
@@ -212,20 +182,20 @@
             }
         });
 
-        $(document).on('click', '#add_lokasi', function() {
+        $(document).on('click', '#add_media', function() {
             // $("#index").val("");
             // $("#no_referensi").val("");
             // $("#catatan").val("");
-            $("#ModalAddLokasi").modal('show');
+            $("#ModalAddMedia").modal('show');
         });
 
-        $(document).on('click', '#edit_lokasi', function() {
+        $(document).on('click', '#edit_media', function() {
             // $("#index").val("");
             // $("#no_referensi").val("");
             // $("#catatan").val("");
             var id = $(this).data("id");
-            $("#id_lokasi").val(id);
-            var url = "{{ url('/') }}/list-lokasi";
+            $("#id_media").val(id);
+            var url = "{{ url('/') }}/list-media";
             $.ajax({
                 type: 'post',
                 dataType: 'json',
@@ -235,25 +205,21 @@
                     // document_id: $("#document_id").val(),
                 },
                 success: function(data) {
-                    $("#lokasi_edit").val(data.name);
-                    $("#edit_code").val(data.code);
-                    $("#edit_keterangan").val(data.description);
+                    $("#edit_name").val(data.name);
                 },
             });
-            $("#ModalEditLokasi").modal('show');
+            $("#ModalEditMedia").modal('show');
         });
 
-        $(document).on('click', '#save_lokasi', function() {
-            var url = "{{ url('/') }}/save-lokasi";
+        $(document).on('click', '#save_media', function() {
+            var url = "{{ url('/') }}/save-media";
             $.ajax({
                 type: 'post',
                 dataType: 'json',
                 url: url,
                 data: {
-                    name: $("#lokasi").val(),
-                    level: $("#level").val(),
-                    code: $("#code").val(),
-                    keterangan: $("#keterangan").val(),
+                    name: $("#name").val(),
+                    // catatan: $("#catatan").val(),
                     // document_id: $("#document_id").val(),
                 },
                 beforeSend: function() {
@@ -268,17 +234,16 @@
             });
         });
 
-        $(document).on('click', '#update_lokasi', function() {
-            var url = "{{ url('/') }}/update-lokasi";
+        $(document).on('click', '#update_media', function() {
+            var url = "{{ url('/') }}/update-media";
             $.ajax({
                 type: 'post',
                 dataType: 'json',
                 url: url,
                 data: {
-                    id: $("#id_lokasi").val(),
-                    name: $("#lokasi_edit").val(),
-                    code: $("#edit_code").val(),
-                    keterangan: $("#edit_keterangan").val(),
+                    id: $("#id_media").val(),
+                    name: $("#edit_name").val(),
+                    // catatan: $("#catatan").val(),
                     // document_id: $("#document_id").val(),
                 },
                 beforeSend: function() {
