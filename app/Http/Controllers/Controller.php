@@ -157,6 +157,16 @@ class Controller extends BaseController
         return redirect("/document");
     }
 
+    public function deleteDetailDocument(Request $request)
+    {
+        // dd($request);
+        // return $request;
+        $detail = DetailDocument::find($request->id);
+        DetailDocument::find($request->id)->delete();
+
+        return redirect("/view-document?id=".$detail->document_id);
+    }
+
     public function saveDetailDocument(Request $request)
     {
         // dd($request);
