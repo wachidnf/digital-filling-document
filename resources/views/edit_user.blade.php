@@ -51,6 +51,7 @@
 					</div>
 					<form  method="post" action="{{ route('update-user') }}" autocomplete="off" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="user_id" id="user_id" value="{{$user->id}}">
 						<div class="form-group row">
                             <label class="col-sm-12 col-md-2 col-form-label">Username</label>
                             <div class="col-sm-12 col-md-10">
@@ -61,7 +62,7 @@
                         <div class="form-group row">
                             <label class="col-sm-12 col-md-2 col-form-label">Email</label>
                             <div class="col-sm-12 col-md-10">
-                                <input class="form-control" placeholder="" type="text" name="code" value="{{ $user->email }}" id="code">
+                                <input class="form-control" placeholder="" type="text" name="email" value="{{ $user->email }}" id="email">
                             </div>
                         </div>
                         <div class="form-group row">

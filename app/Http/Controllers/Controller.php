@@ -480,6 +480,19 @@ class Controller extends BaseController
         return response()->json(['status'=>1]);
     }
 
+    public function updateUser(Request $request)
+    {
+        // return $request;
+        $document = User::find($request->user_id);
+        $document->username = $request->name;
+        $document->name = $request->name;
+        $document->email = $request->email;
+        $document->password = Hash::make($request->password);
+        $document->save();
+
+        return redirect("/edit-user?id=".$request->user_id);
+    }
+
     public function editUser(Request $request)
     {
         $user = User::find($request->id);
