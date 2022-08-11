@@ -189,7 +189,7 @@
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                                     {{-- <a class="dropdown-item" href="view-document?id={{$value->id}}"><i class="dw dw-eye"></i> View</a> --}}
                                                     <a class="dropdown-item"  onclick="file('{{$value->id}}','detail document')">File</a>
-                                                    <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
+                                                    <a class="dropdown-item edit_detail" data-id="{{ $value->id }}"><i class="dw dw-edit2"></i> Edit</a>
                                                     <a class="dropdown-item" href="delete-detail-document?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
                                                 </div>
                                             </div>
@@ -295,6 +295,71 @@
             </div>
         </form>
         </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalEditDetail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" action="{{ route('edit-detail-document') }}" autocomplete="off" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">ADD DETAIL DOCUMENT</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" placeholder="" type="hidden" name="edit_detail_document_id" value="" id="edit_detail_document_id">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">Name</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input class="form-control" placeholder="" type="text" name="edit_name" value="" id="edit_name" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">No Referensi</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input class="form-control" placeholder="" type="text" name="edit_no_referensi" value="" id="edit_no_referensi" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">Catatan</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea class="form-control" name="edit_catatan" id="edit_catatan" required></textarea>
+                            </div>
+                        </div>
+                        {{-- <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">File Lampiran</label>
+                            <div class="col-sm-12 col-md-10">
+                                <table class="table nowrap" id="table_file">
+                                    <thead>
+                                        <th style="width:40%">file</th>
+                                        <th>Note</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="baris">
+                                            <td>
+                                                <input class="form-control" placeholder="" type="file" name="file[]" value="" id="file">
+                                            </td>
+                                            <td>
+                                                <textarea class="form-control" name="file_note[]" id="file_note" style="height: 10%;"></textarea>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <td colspan="2" style="text-align: center">
+                                            <button type="button" class="btn btn-success" id="tambah_file"><i class="icon-copy fi-plus"> Tambah File</i></button>
+                                        </td>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div> --}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="save_detail">SIMPAN DETAIL</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 	<!-- js -->
@@ -465,6 +530,31 @@
             });
             $("#ModalFile").modal('show');
         }
+
+        $(document).on('click', '.edit_detail', function() {
+            // $("#index").val("");
+            // $("#no_referensi").val("");
+            // $("#catatan").val("");
+            var id = $(this).data("id");
+            // $("#id_department").val(id);
+            var url = "{{ url('/') }}/data-detail-document";
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    id: id
+                    // document_id: $("#document_id").val(),
+                },
+                success: function(data) {
+                    $("#edit_detail_document_id").val(id)
+                    $("#edit_name").val(data.data.name);
+                    $("#edit_no_referensi").val(data.data.reference_no);
+                    $("#edit_catatan").val(data.data.notes);
+                },
+            });
+            $("#ModalEditDetail").modal('show');
+        });
     </script>
 </body>
 </html>
