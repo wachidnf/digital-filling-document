@@ -46,6 +46,7 @@ Route::get('/dashboard', function () {
     Route::post('/data-detail-document', 'Controller@dataDetailDocument')->middleware(['auth'])->name('data-detail-document');
     Route::post('/edit-detail-document', 'Controller@editDetailDocument')->middleware(['auth'])->name('edit-detail-document');
     Route::get('/delete-detail-document', 'Controller@deleteDetailDocument')->middleware(['auth'])->name('delete-detail-document');
+    Route::post('/send-email-document', 'Controller@sendEmailDocument')->middleware(['auth'])->name('send-email-document');
 
     Route::get('/lokasi', 'Controller@indexLokasi')->middleware(['auth'])->name('lokasi');
     Route::post('/save-lokasi', 'Controller@saveLokasi')->middleware(['auth'])->name('save-lokasi');

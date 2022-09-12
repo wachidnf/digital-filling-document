@@ -45,6 +45,7 @@
 							<h4 class="text-blue h4">VIEW DOKUMEN FILE</h4>
 							{{-- <p class="mb-30">All bootstrap element classies</p> --}}
                             <button class="btn btn-primary" type="button" id="add_lokasi" onclick="cetak('{{$data}}')">QRCODE</button>
+                            <button class="btn btn-primary" type="button" id="btn_modal_mail" >EMAIL</button>
 						</div>
 						<div class="pull-right">
 							{{-- <a href="#basic-form1" class="btn btn-primary btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button"><i class="fa fa-code"></i> Source Code</a> --}}
@@ -362,6 +363,119 @@
             </div>
         </div>
     </div>
+
+    <div id="clone_email_to" hidden>
+        <div class="form-group row baris">
+            <label class="col-sm-12 col-md-2 col-form-label"></label>
+            <div class="col-sm-12 col-md-10" style="display: contents;">
+                <div class="col-md-10" style="display: contents;">
+                    <div class="col-sm-12 col-md-9">
+                        <input class="form-control email_to" placeholder="" type="mail" name="email_to" value="" id="email_to" required>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger kurang_email" id="kurang_email"><i class="icon-copy fi-minus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="clone_email_cc" hidden>
+        <div class="form-group row baris">
+            <label class="col-sm-12 col-md-2 col-form-label"></label>
+            <div class="col-sm-12 col-md-10" style="display: contents;" >
+                <div class="col-md-10" style="display: contents;">
+                    <div class="col-sm-12 col-md-9">
+                        <input class="form-control email_cc" placeholder="" type="mail" name="email_cc" value="" id="email_cc" required>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger kurang_email" id="kurang_email"><i class="icon-copy fi-minus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalEmail" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true" style="overflow-y:auto;padding-top: 100px;">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            {{-- <h3 class="modal-title" id="myModalLabel"><span style="color: grey" id="modalemailtitle">Email</span></h3> --}}
+        </div>
+        <div class="modal-body">
+            <div id="div_email_to">
+                <div class="form-group row baris">
+                    <label class="col-sm-12 col-md-2 col-form-label">To</label>
+                    <div class="col-sm-12 col-md-10" style="display: contents;">
+                        <div class="col-md-10" style="display: contents;">
+                            <div class="col-sm-12 col-md-9">
+                                <input class="form-control email_to" placeholder="" type="mail" name="email_to" value="" id="email_to" required>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-success" id="tambah_email_to"><i class="icon-copy fi-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="div_email_cc">
+                <div class="form-group row baris">
+                    <label class="col-sm-12 col-md-2 col-form-label">Cc</label>
+                    <div class="col-sm-12 col-md-10" style="display: contents;" >
+                        <div class="col-md-10" style="display: contents;">
+                            <div class="col-sm-12 col-md-9">
+                                <input class="form-control email_cc" placeholder="" type="mail" name="email_cc" value="" id="email_cc" required>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-success" id="tambah_email_cc"><i class="icon-copy fi-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-2 col-form-label">Body Email</label>
+                <div class="col-sm-12 col-md-10">
+                    <input class="form-control email_body" placeholder="" type="text" name="email_body" value="" id="email_body" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-2 col-form-label">Lampiran</label>
+                <div class="col-sm-12 col-md-10">
+                    {{-- <input class="form-control email_lampiran" placeholder="" type="mail" name="email_lampiran" value="" id="email_lampiran" required> --}}
+                    <table class="table">
+                        <thead>
+                            <th>Check</th>
+                            <th>Name</th>
+                            <th>No Referensi</th>
+                            <th>File Name</th>
+                            <th>File Note</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($detail_document as $key => $value)
+                                @foreach ($value->attachment as $key2 => $value2)
+                                    <tr>
+                                        <td><input type="checkbox" class="email_file" name="email_file" value="{{$value2->id}}"></td>
+                                        <td>{{$value->name}}</td>
+                                        <td>{{$value->reference_no}}</td>
+                                        <td>{{$value2->filename}}</td>
+                                        <td>{{$value2->description}}</td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="send_email">Kirim Email</button>
+        </div>
+        </div>
+        </div>
+    </div>
 	<!-- js -->
 	<script src="vendors/scripts/core.js"></script>
 	<script src="vendors/scripts/script.min.js"></script>
@@ -386,6 +500,8 @@
     <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.min.js"></script>
     {{-- <script src="{{ url('/') }}/assets/bower_components/select2/dist/js/select2.full.min.js"></script> --}}
 
+    <script src="https://cdn.ckeditor.com/4.11.3/standard/ckeditor.js"></script>
+
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -393,11 +509,78 @@
             }
         });
 
+        $(document).ready(function(){
+            CKEDITOR.replace( 'email_body' );
+        });
+
         $(document).on('click', '#add_detail', function() {
             $("#index").val("");
             $("#no_referensi").val("");
             $("#catatan").val("");
             $("#ModalAddDetail").modal('show');
+        });
+
+        $(document).on('click', '#btn_modal_mail', function() {
+            // $("#index").val("");
+            // $("#no_referensi").val("");
+            // $("#catatan").val("");
+            $("#ModalEmail").modal('show');
+        });
+
+        $(document).on('click', '#tambah_email_to', function() {
+            $("#div_email_to").append($('#clone_email_to').clone().html());
+        });
+
+        $(document).on('click', '#tambah_email_cc', function() {
+            $("#div_email_cc").append($('#clone_email_cc').clone().html());
+        });
+
+        $(document).on('click', '.kurang_email', function() {
+            $(this).parents(".baris").remove();
+            // $("#div_email_cc").append($('#clone_email_cc').clone().html());
+        });
+
+        $(document).on('click', '#send_email', function() {
+            var array_to = [];
+            var array_cc = [];
+            var array_file = [];
+
+            $("#div_email_to").find(".email_to").each(function () {
+                array_to.push($(this).val());
+            });
+
+            $("#div_email_cc").find(".email_cc").each(function () {
+                array_cc.push($(this).val());
+            });
+
+            $(".email_file").each(function () {
+                if ($(this).is(':checked')) {
+                    array_file.push($(this).val());
+                }
+            });
+
+            var url = "{{ url('/')}}/send-email-document";
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    document_id : $("#document_id").val(),
+                    array_to : array_to,
+                    array_cc : array_cc,
+                    body_mail : CKEDITOR.instances.email_body.getData(),
+                    array_file : array_file,
+                },
+                // beforeSend: function() {
+                //     waitingDialog.show();
+                // },
+                success: function(data) {
+                    console.log(data);
+                },
+                // complete: function() {
+                //     waitingDialog.hide();
+                // }
+            });
         });
 
         var t = $('#table_file').DataTable({

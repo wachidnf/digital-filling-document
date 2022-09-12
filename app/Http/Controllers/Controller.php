@@ -145,6 +145,8 @@ class Controller extends BaseController
         // ];
         // $data = json_encode($data);
         $data = "https://digfil.citragran.com/view-document-direct?id=".$document->id;
+        // dd(Attachment::where('source_id',1)->where('type',"detail document")->get());
+        // dd($detail_document[0]->attachment);
         return view('view_document',compact("document","detail_document","department","lokasi","data","project","pt"));
     }
 
@@ -601,6 +603,11 @@ class Controller extends BaseController
         }
 
         return "success";
+    }
+
+    public function sendEmailDocument(Request $request)
+    {
+        return $request;
     }
 
 }
