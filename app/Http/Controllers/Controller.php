@@ -109,6 +109,7 @@ class Controller extends BaseController
         $document->pt_id = $request->pt;
         $document->description = $request->keterangan;
         $document->storage_id = $request->lokasi;
+        $document->status = $request->status;
         $document->save();
 
         return redirect("/document");
@@ -124,6 +125,7 @@ class Controller extends BaseController
         $document->department_id = $request->department;
         $document->description = $request->keterangan;
         $document->storage_id = $request->lokasi;
+        $document->status = $request->status;
         $document->save();
 
         return redirect("/document");
@@ -314,7 +316,8 @@ class Controller extends BaseController
     {
         $document = MStorage::find($request->id);
         $level = LevelStorage::get();
-        return view('edit_lokasi',compact("document", "level"));
+        $lokasi = MStorage::where("id","!=",$document->id)->get();
+        return view('edit_lokasi',compact("document", "level", "lokasi"));
     }
 
     public function saveLokasi(Request $request)
@@ -326,6 +329,7 @@ class Controller extends BaseController
         $document->level = $request->level;
         $document->code = $request->code;
         $document->description = $request->keterangan;
+        $document->parent_id = $request->sumber_lokasi;
         $document->save();
 
         return response()->json(['status'=>1]);
@@ -340,6 +344,7 @@ class Controller extends BaseController
         $storage->level = $request->level;
         $storage->code = $request->code;
         $storage->description = $request->keterangan;
+        $storage->parent_id = $request->sumber_lokasi;
         $storage->save();
 
         // return response()->json(['status'=>1]);
@@ -353,6 +358,7 @@ class Controller extends BaseController
         $data['level']          = $storage->level;
         $data['code']           = $storage->code;
         $data['description']    = $storage->description;
+        $data['sumber_lokasi']    = $storage->parent_id;
         return response()->json($data);
     }
 
@@ -623,7 +629,7 @@ class Controller extends BaseController
                     array_push($dataFile, $file);
                 }
             }
-            
+
             if($data['email_cc'][0] != null){
                 Mail::send('bodyEmailDocument', ['body' => $bodyEmail], function($message)use($data, $dataFile) {
                     $message->from(env('MAIL_USERNAME'))->to($data['email_to'])->cc($data['email_cc'])->subject($data['subject']);
@@ -638,7 +644,7 @@ class Controller extends BaseController
                         $file = storage_path() . "\\app\\" . str_replace("storage", "", $attachment->link);
                         $message->attach($file, array('as' => $name));
                     }
-                }); 
+                });
             }else{
                 Mail::send('bodyEmailDocument', ['body' => $bodyEmail], function($message)use($data, $dataFile) {
                     $message->from(env('MAIL_USERNAME'))->to($data['email_to'])->subject($data['subject']);
@@ -653,7 +659,7 @@ class Controller extends BaseController
                         $file = storage_path() . "\\app\\" . str_replace("storage", "", $attachment->link);
                         $message->attach($file, array('as' => $name));
                     }
-                }); 
+                });
             }
             return response()->json( ["status" => "1"] );
         }catch (\Exception $e){

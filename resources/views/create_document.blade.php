@@ -120,6 +120,16 @@
 								<textarea class="form-control" name="keterangan"></textarea>
 							</div>
 						</div>
+                        <div class="form-group row">
+							<label class="col-sm-12 col-md-2 col-form-label">Status Document</label>
+							<div class="col-sm-12 col-md-10">
+								<select class="custom-select col-12" name="status">
+									{{-- <option disabled selected>Pilih Status...</option> --}}
+                                    <option value="0" selected>Public</option>
+                                    <option value="1">Private</option>
+								</select>
+							</div>
+						</div>
 						{{-- <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Number</label>
 							<div class="col-sm-12 col-md-10">

@@ -65,6 +65,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">Sumber Lokasi</label>
+                            <div class="col-sm-12 col-md-10">
+                                <select class="custom-select col-12" name="sumber_lokasi" id="sumber_lokasi">
+                                    <option disabled selected>-- Pilih Sumber Lokasi --</option>
+                                    @foreach ($lokasi as $key => $value)
+                                        <option value="{{$value->id}}" {{ $document->parent_id == $value->id ? 'selected' : '' }}>{{$value->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-12 col-md-2 col-form-label">Level</label>
                             <div class="col-sm-12 col-md-10">
                                 <select class="custom-select col-12" name="level">

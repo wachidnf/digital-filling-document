@@ -125,6 +125,17 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Sumber Lokasi</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select class="custom-select col-12" name="sumber_lokasi" id="sumber_lokasi">
+                                <option disabled selected>-- Pilih Sumber Lokasi --</option>
+                                @foreach ($lokasi as $key => $value)
+                                    <option value="{{$value->id}}">{{$value->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-12 col-md-2 col-form-label">Lokasi File</label>
                         <div class="col-sm-12 col-md-10">
                             <select class="custom-select col-12" name="level" id="level">
@@ -238,6 +249,7 @@
                     $("#lokasi_edit").val(data.name);
                     $("#edit_code").val(data.code);
                     $("#edit_keterangan").val(data.description);
+                    $("#edit_sumber_lokasi").val(data.sumber_lokasi);
                 },
             });
             $("#ModalEditLokasi").modal('show');
@@ -254,6 +266,7 @@
                     level: $("#level").val(),
                     code: $("#code").val(),
                     keterangan: $("#keterangan").val(),
+                    sumber_lokasi: $("#sumber_lokasi").val(),
                     // document_id: $("#document_id").val(),
                 },
                 beforeSend: function() {
@@ -279,6 +292,7 @@
                     name: $("#lokasi_edit").val(),
                     code: $("#edit_code").val(),
                     keterangan: $("#edit_keterangan").val(),
+                    sumber_lokasi: $("#edit_sumber_lokasi").val(),
                     // document_id: $("#document_id").val(),
                 },
                 beforeSend: function() {

@@ -142,6 +142,12 @@
 								<textarea class="form-control" name="keterangan" disabled>{{$document->description}}</textarea>
 							</div>
 						</div>
+                        <div class="form-group row">
+							<label class="col-sm-12 col-md-2 col-form-label">Status</label>
+							<div class="col-sm-12 col-md-10">
+                                <input class="form-control" value="{{$document->status == 0 ? 'Public' : 'Private'}}" type="text" name="status" disabled>
+							</div>
+						</div>
 						{{-- <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Number</label>
 							<div class="col-sm-12 col-md-10">
