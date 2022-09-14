@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Crypt;
 use Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class Controller extends BaseController
 {
@@ -607,7 +608,57 @@ class Controller extends BaseController
 
     public function sendEmailDocument(Request $request)
     {
-        return $request;
+        try{
+            $document = Document::find($request->document_id);
+            $subject = "Lampiran Dokumen " . $document->document_no;
+            $bodyEmail = $request->body_mail;
+            $data['email_to'] = $request->array_to;
+            $data['email_cc'] = $request->array_cc;
+            $data['subject'] = $subject;
+            $dataFile = [];
+            if($request->array_file != null){
+                foreach($request->array_file as $key => $valFile){
+                    $attachment = Attachment::find($valFile);
+                    $file = $attachment->id;
+                    array_push($dataFile, $file);
+                }
+            }
+            
+            if($data['email_cc'][0] != null){
+                Mail::send('bodyEmailDocument', ['body' => $bodyEmail], function($message)use($data, $dataFile) {
+                    $message->from(env('MAIL_USERNAME'))->to($data['email_to'])->cc($data['email_cc'])->subject($data['subject']);
+
+                    foreach ($dataFile as $key => $result){
+                        $attachment = Attachment::find($result);
+                        if ($attachment != "") {
+                            $name =$attachment->filename;
+                        }else{
+                            $name = '';
+                        }
+                        $file = storage_path() . "\\app\\" . str_replace("storage", "", $attachment->link);
+                        $message->attach($file, array('as' => $name));
+                    }
+                }); 
+            }else{
+                Mail::send('bodyEmailDocument', ['body' => $bodyEmail], function($message)use($data, $dataFile) {
+                    $message->from(env('MAIL_USERNAME'))->to($data['email_to'])->subject($data['subject']);
+
+                    foreach ($dataFile as $key => $result){
+                        $attachment = Attachment::find($result);
+                        if ($attachment != "") {
+                            $name =$attachment->filename;
+                        }else{
+                            $name = '';
+                        }
+                        $file = storage_path() . "\\app\\" . str_replace("storage", "", $attachment->link);
+                        $message->attach($file, array('as' => $name));
+                    }
+                }); 
+            }
+            return response()->json( ["status" => "1"] );
+        }catch (\Exception $e){
+            return response()->json( ["status" => "0"] );
+        }
     }
 
 }

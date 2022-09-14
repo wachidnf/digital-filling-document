@@ -575,7 +575,13 @@
                 //     waitingDialog.show();
                 // },
                 success: function(data) {
-                    console.log(data);
+                    if(data.status == 1){
+                        alert('Berhasil Kirim Email');
+                        location.reload();
+                    }else{
+                        alert('Gagal Kirim Email ! Harap ulangi.');
+                        // location.reload();
+                    }
                 },
                 // complete: function() {
                 //     waitingDialog.hide();
