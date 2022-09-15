@@ -33,6 +33,7 @@ class DigitalFillingDocument extends Migration
             $table->string('name');
             $table->string('level')->nullable();
             $table->text('description');
+            $table->integer('parent_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->integer('created_by')->nullable();
@@ -48,6 +49,8 @@ class DigitalFillingDocument extends Migration
             $table->integer('department_id');
             $table->integer('project_id');
             $table->integer('pt_id');
+            $table->integer('parent_id')->nullable();
+            $table->integer('status');
             $table->text('description');
             $table->integer('storage_id');
             $table->timestamps();

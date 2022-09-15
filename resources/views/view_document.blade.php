@@ -288,6 +288,8 @@
         </div>
         <form>
             <div class="modal-body">
+                {{-- <button class="btn btn-success" id="addRow"><i class="icon-copy fi-plus"> Tambah File</i></button> --}}
+                <input id="count_file" type="hidden">
                 <div class="tab-pane table-responsive" id="tab_2">
                 <table id="file_attachment" class="table table-bordered bg-white mg-b-0 tx-center" style="font-size:15px; width: 100%; ">
                     <thead class="head_table">
@@ -295,6 +297,7 @@
                         <td rowspan="" style="vertical-align: middle;text-align: center">No</td>
                         <td rowspan="" style="vertical-align: middle;text-align: center">File Lampiran</td>
                         <td rowspan="" style="vertical-align: middle;text-align: center">Note</td>
+                        <td rowspan="" style="vertical-align: middle;text-align: center">Action</td>
                     </tr>
                     </thead>
                 </table>
@@ -364,6 +367,42 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="save_detail">SIMPAN DETAIL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalEditFile" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" action="{{ route('update-file-document') }}" autocomplete="off" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">EDIT FILE</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" placeholder="" type="hidden" name="edit_document_id" value="" id="edit_document_id">
+                        <input class="form-control" placeholder="" type="hidden" name="edit_attachment_id" value="" id="edit_attachment_id">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">File</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input class="form-control" placeholder="" type="file" name="edit_file[]" value="" id="edit_file">
+                                <br>
+                                <span id="link_file"><a class="btn btn-info font_kecil btn-sm"><i class="fa fa-cloud-download"> Download</i></a></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">Note</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea class="form-control" name="edit_file_note" id="edit_file_note" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="save_change">SIMPAN</button>
                     </div>
                 </form>
             </div>
@@ -482,6 +521,7 @@
         </div>
         </div>
     </div>
+
 	<!-- js -->
 	<script src="vendors/scripts/core.js"></script>
 	<script src="vendors/scripts/script.min.js"></script>
@@ -677,6 +717,7 @@
                     {data:"no",name:"no"},
                     {data:"file",name:"file"},
                     {data:"description",name:"description"},
+                    {data:"aksi",name:"aksi"}
             ],
             "order": [[ 0, 'asc' ]]
             // "columnDefs": [
@@ -685,6 +726,84 @@
             //         // "className": "text-center",
             //     }
             // ],
+        });
+        
+        // var t = $('#file_attachment').DataTable({
+        //         autoWidth: false,
+        //         paging:false,
+        //         columnDefs: [
+        //         {
+        //             "targets": 3,
+        //             "className": "text-center",
+        //             // "width": "4%"
+        //         },
+        //         // {
+        //         //     "targets": 2,
+        //         //     "className": "text-right",
+        //         // },
+        //         ],
+        // });
+        
+        // $('#addRow').on( 'click', function () {
+        //     t.row.add( [
+        //         null,
+        //         "<input type='file' class='form-control file' name='file[]' style='width:100%;' accept='application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, image/jpeg, image/png, application/pdf'>",
+        //         "<input type='text' class='form-control file_name' name='file_name[]' autocomplete='off' style='width:100%;' placeholder='Nama File'>",
+        //         "<button type='button' class='btn btn-danger hapus' ><i class='fa fa-trash' style='font-size:15px'></i></button>"
+        //     ] ).draw( false );
+        //     // $("#file_attachment").find('tr');
+        //     // $("select").select2();
+        // });
+
+        function hapus(id, document_id){
+            var url = "{{ url('/')}}/delete-file";
+            if(confirm("Apakah anda yakin menghapus file ini?")){
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: url,
+                    data: {
+                        id : id,
+                        document_id : document_id
+                    },
+                    // beforeSend: function() {
+                    //     waitingDialog.show();
+                    // },
+                    success: function(data) {
+                    },
+                    // complete: function() {
+                    //     waitingDialog.hide();
+                    // }
+                });
+            }else{
+                return false;
+            }
+        }
+
+        $(document).on('click', '.edit_file_document', function() {
+            // $("#index").val("");
+            // $("#no_referensi").val("");
+            // $("#catatan").val("");
+            var id = $(this).data("id");
+            // $("#id_department").val(id);
+            var url = "{{ url('/') }}/edit-file";
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    id: id
+                    // document_id: $("#document_id").val(),
+                },
+                success: function(data) {
+                    $("#edit_document_id").val(data.data.document_id)
+                    $("#edit_attachment_id").val(data.data.attachment_id);
+                    $("#edit_file_note").val(data.data.notes);
+                    var  link = "{{ url('/') }}/download-file?id=" + data.data.attachment_id;
+                    document.getElementById('link_file').innerHTML = '<a  class="btn btn-info font_kecil btn-sm" href="' + link + '"><i class="fa fa-cloud-download"> Download</i></a>';
+                },
+            });
+            $("#ModalEditFile").modal('show');
         });
 
         function file(source_id,type){
@@ -710,10 +829,12 @@
                                 no: i+1,
                                 file: v.file,
                                 description: v.description,
-
+                                aksi: v.aksi,
+                                cek: v.cek
                             };
                             $('#file_attachment').DataTable().row.add(ItemTable);
                         });
+                        $("#count_file").val(data.file.length);
                     }
                     // $('#modalfiletitle').text("File Lampiran");
                     $('#file_attachment').DataTable().draw();

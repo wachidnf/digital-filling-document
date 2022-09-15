@@ -442,12 +442,15 @@ class Controller extends BaseController
         $data = [];
 
         $attachment = Attachment::where('source_id',$request->source_id)->where('type',$request->type)->get();
+        $detail_document = DetailDocument::find($request->source_id);
         foreach ($attachment as $key => $value)
         {
             $url = url('/')."/download-file?id=".$value->id;
+            $url_hapus = url('/')."/delete-file?id=".$value->id."&document_id=".$detail_document->document_id;
             $arr = [
                 "file"        => '<a class="btn btn-info font_kecil" href="'.$url.'""><i class="fa fa-cloud-download">Download</i> </a>',
                 "description"    => $value->description,
+                "aksi"    => '<a class="btn btn-danger btn-sm font_kecil" onclick="hapus('.$value->id.', '.$request->source_id.')"><i class="fa fa-trash-o"> Delete</i> </a> <a class="btn btn-warning btn-sm font_kecil edit_file_document" data-id="'.$value->id.'""><i class="fa fa-edit"> Edit</i> </a>',
             ];
             array_push($data, $arr);
 
@@ -477,6 +480,75 @@ class Controller extends BaseController
         // $file = public_path() . "/" . str_replace("public", "", $attachment->filenames);
         // return response()->download($file, $name, $headers);
         return Storage::download($attachment->link, $name);
+    }
+
+    public function deleteFile(Request $request)
+    {
+        Attachment::find($request->id)->delete();
+        return redirect("/view-document?id=".$request->document_id);
+    }
+
+    public function editFile(Request $request)
+    {
+        $file = Attachment::find($request->id);
+        $detail_document = DetailDocument::find($file->source_id);
+        $file['document_id']    = $detail_document->document_id;
+        $file['attachment_id']  = $file->id;
+        $file['notes']          = $file->description;
+        // $data['name']   = $department->name;
+        // $data['code']   = $department->code;
+        return response()->json(["data" => $file]);
+    }
+
+    public function updateFile(Request $request)
+    {
+        $attachment = Attachment::find($request->edit_attachment_id);
+        $attachment->description = $request->edit_file_note;
+        $attachment->save();
+
+        if($request->file('edit_file') != null){
+            foreach ($_FILES["edit_file"]["error"] as $key => $error) {
+                // return $request->file('file')[$key]->getClientMimeType();
+                if ($error == 0) {
+                    $attachment = Attachment::find($request->edit_attachment_id);
+                    $uploadedFile = $request->file('edit_file')[$key];
+                    $type = $uploadedFile->getClientMimeType();
+                    $array_file = array(
+                        "application/msword",
+                        "application/pdf",
+                        "image/jpeg",
+                        "image/pjpeg",
+                        "image/png",
+                        "application/excel",
+                        "application/vnd.ms-excel",
+                        "application/x-excel",
+                        "application/x-msexcel",
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        // 'application/zip',
+                        // 'application/x-zip-compressed',
+                        // 'multipart/x-zip',
+                        // 'application/x-compressed',
+                        // 'application/rar',
+                        // 'application/x-rar-compressed',
+                        // 'multipart/x-rar',
+                    );
+    
+                    $name = $_FILES['edit_file']['name'][$key];
+                    $checkpdf = array_search($type, $array_file);
+                    if ($checkpdf != "") {
+                        $pathpdf = Storage::put('detail_document/'.$attachment->source_id, $uploadedFile);
+                        $new_file_name = explode("/", $pathpdf);
+                        $tmp_name = $_FILES['edit_file']['tmp_name'][$key];
+                        $attachment->link = $pathpdf;
+                        $attachment->filename = $name;
+                    }
+    
+                    $attachment->save();
+                }
+            }
+        }
+        return redirect("/view-document?id=".$request->edit_document_id);
     }
 
     public function indexUser(Request $request)

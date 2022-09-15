@@ -65,6 +65,9 @@ Route::get('/dashboard', function () {
 
     Route::post('/file_attachment', 'Controller@fileAttachment')->name('file_attachment');
     Route::get('/download-file', 'Controller@downloadFile')->name('download-file');
+    Route::post('/delete-file', 'Controller@deleteFile')->name('delete-file');
+    Route::post('/edit-file', 'Controller@editFile')->name('edit-file');
+    Route::post('/update-file-document', 'Controller@updateFile')->name('update-file-document');
 
     Route::get('/user', 'Controller@indexUser')->middleware(['auth'])->name('user');
     Route::post('/save-user', 'Controller@saveUser')->middleware(['auth'])->name('save-user');
