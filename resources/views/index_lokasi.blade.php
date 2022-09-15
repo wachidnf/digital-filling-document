@@ -128,7 +128,7 @@
                         <label class="col-sm-12 col-md-2 col-form-label">Sumber Lokasi</label>
                         <div class="col-sm-12 col-md-10">
                             <select class="custom-select col-12" name="sumber_lokasi" id="sumber_lokasi">
-                                <option disabled selected>-- Pilih Sumber Lokasi --</option>
+                                <option value selected>-- Pilih Sumber Lokasi --</option>
                                 @foreach ($lokasi as $key => $value)
                                     <option value="{{$value->id}}">{{$value->name}}</option>
                                 @endforeach
