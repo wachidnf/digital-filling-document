@@ -74,65 +74,24 @@
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Project</label>
 							<div class="col-sm-12 col-md-10">
-								{{-- <select class="custom-select col-12" name="project" disabled>
-									<option disabled selected>Pilih Project...</option>
-                                    @foreach ($project as $key => $value)
-                                        @if ($value->id == $document->project_id)
-                                            <option value="{{$value->id}}" selected>{{$value->name}}</option>
-                                        @else
-                                            <option value="{{$value->id}}">{{$value->name}}</option>
-                                        @endif
-                                    @endforeach
-								</select> --}}
                                 <input class="form-control" value="{{$document->project->name}}" type="text" name="project" disabled>
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Pt</label>
 							<div class="col-sm-12 col-md-10">
-								{{-- <select class="custom-select col-12" name="pt" disabled>
-									<option disabled selected>Pilih Pt...</option>
-                                    @foreach ($pt as $key => $value)
-                                        @if ($value->id == $document->pt_id)
-                                            <option value="{{$value->id}}" selected>{{$value->name}}</option>
-                                        @else
-                                            <option value="{{$value->id}}">{{$value->name}}</option>
-                                        @endif
-                                    @endforeach
-								</select> --}}
                                 <input class="form-control" value="{{$document->pt->name}}" type="text" name="pt" disabled>
 							</div>
 						</div>
                         <div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Department</label>
 							<div class="col-sm-12 col-md-10">
-								{{-- <select class="custom-select col-12" name="department" disabled>
-									<option disabled selected>Pilih Department...</option>
-                                    @foreach ($department as $key => $value)
-                                        @if ($value->id == $document->department_id)
-                                            <option value="{{$value->id}}" selected>{{$value->name}}</option>
-                                        @else
-                                            <option value="{{$value->id}}">{{$value->name}}</option>
-                                        @endif
-                                    @endforeach
-								</select> --}}
                                 <input class="form-control" value="{{$document->department->name}}" type="text" name="department" disabled>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-12 col-md-2 col-form-label">Lokasi File</label>
 							<div class="col-sm-12 col-md-10">
-								{{-- <input class="form-control" value="{{$document->storage_id}}" type="text" name="lokasi"> --}}
-                                {{-- <select class="custom-select col-12" name="lokasi" disabled>
-									<option disabled selected>Pilih Lokasi...</option>
-                                    @foreach ($lokasi as $key => $value)
-                                        @if ($value->id == $document->storage_id)
-                                            <option value="{{$value->id}}" selected>{{ $value->level_storages->name  }} - {{$value->name}}</option>
-                                        @else
-                                            <option value="{{$value->id}}">{{ $value->level_storages->name  }} - {{$value->name}}</option>
-                                        @endif
-                                    @endforeach
-								</select> --}}
                                 <input class="form-control" value="{{ $document->lokasi->level_storages->name  }} - {{$document->lokasi->name}}" type="text" name="lokasi" disabled>
 							</div>
 						</div>
@@ -148,14 +107,7 @@
                                 <input class="form-control" value="{{$document->status == 0 ? 'Public' : 'Private'}}" type="text" name="status" disabled>
 							</div>
 						</div>
-						{{-- <div class="form-group row">
-							<label class="col-sm-12 col-md-2 col-form-label">Number</label>
-							<div class="col-sm-12 col-md-10">
-								<input class="form-control" value="" type="type">
-							</div>
-						</div> --}}
                         <div>
-                            {{-- <button class="btn btn-primary" type="submit">Simpan</button> --}}
                         </div>
 					</form>
 				</div>
