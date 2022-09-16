@@ -686,7 +686,7 @@ class Controller extends BaseController
 
     public function sendEmailDocument(Request $request)
     {
-        try{
+        // try{
             $document = Document::find($request->document_id);
             $subject = "Lampiran Dokumen " . $document->document_no;
             $bodyEmail = $request->body_mail;
@@ -734,9 +734,9 @@ class Controller extends BaseController
                 });
             }
             return response()->json( ["status" => "1"] );
-        }catch (\Exception $e){
-            return response()->json( ["status" => "0"] );
-        }
+        // }catch (\Exception $e){
+        //     return response()->json( ["status" => "0"] );
+        // }
     }
 
 }
