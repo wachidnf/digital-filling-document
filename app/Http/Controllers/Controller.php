@@ -713,7 +713,7 @@ class Controller extends BaseController
                         }else{
                             $name = '';
                         }
-                        $file = storage_path() . "\\app\\" . str_replace("storage", "", $attachment->link);
+                        $file = storage_path() . "/app/" . str_replace("storage", "", $attachment->link);
                         $message->attach($file, array('as' => $name));
                     }
                 });
@@ -728,7 +728,7 @@ class Controller extends BaseController
                         }else{
                             $name = '';
                         }
-                        $file = storage_path() . "\\app\\" . str_replace("storage", "", $attachment->link);
+                        $file = storage_path() . "/app/" . str_replace("storage", "", $attachment->link);
                         $message->attach($file, array('as' => $name));
                     }
                 });
