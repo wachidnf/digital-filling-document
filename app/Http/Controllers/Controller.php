@@ -147,7 +147,7 @@ class Controller extends BaseController
         //     "url" => "http://localhost/digital-filling-document/public/view-document?id=".$document->id,
         // ];
         // $data = json_encode($data);
-        $data = "https://digfil.citragran.com/view-document-direct?id=".$document->id;
+        $data = url('/')."/view-document-direct?id=".$document->id;
         // dd(Attachment::where('source_id',1)->where('type',"detail document")->get());
         // dd($detail_document[0]->attachment);
         return view('view_document',compact("document","detail_document","department","lokasi","data","project","pt"));
@@ -328,6 +328,7 @@ class Controller extends BaseController
         $document->name = $request->name;
         $document->level = $request->level;
         $document->code = $request->code;
+        $document->sequence_no = $request->sequence_no;
         $document->description = $request->keterangan;
         $document->parent_id = $request->sumber_lokasi;
         $document->save();
@@ -343,6 +344,7 @@ class Controller extends BaseController
         $storage->name = $request->name;
         $storage->level = $request->level;
         $storage->code = $request->code;
+        $storage->sequence_no = $request->sequence_no;
         $storage->description = $request->keterangan;
         $storage->parent_id = $request->sumber_lokasi;
         $storage->save();
@@ -357,8 +359,9 @@ class Controller extends BaseController
         $data['name']           = $storage->name;
         $data['level']          = $storage->level;
         $data['code']           = $storage->code;
+        $data['sequence_no']    = $storage->sequence_no;
         $data['description']    = $storage->description;
-        $data['sumber_lokasi']    = $storage->parent_id;
+        $data['sumber_lokasi']  = $storage->parent_id;
         return response()->json($data);
     }
 
@@ -431,7 +434,42 @@ class Controller extends BaseController
         //     "url" => "http://localhost/digital-filling-document/public/view-document?id=".$document->id,
         // ];
         // $data = json_encode($data);
-        $data = "http://localhost/digital-filling-document/public/view-document-direct?id=".$document->id;
+        $data = url('/')."/view-document-direct?id=".$document->id;
+        return view('qrcode_view_document',compact("document","detail_document","department","lokasi","data"));
+    }
+
+    public function qrcodeViewLokasiDocument(Request $request)
+    {
+        $lokasi = MStorage::find($request->id);
+        $data =[];
+        $level = "";
+            if($lokasi->level_storages != null){
+                $level = $lokasi->level_storages->name;
+            }
+        $arr = [
+            "id" => $lokasi->id,
+                "name" => $lokasi->name,
+                "code" => $lokasi->code,
+                "level" => $level,
+                "sequence_no" => $lokasi->sequence_no,
+                "description" => $lokasi->description,
+                "link" =>  url('/')."/view-lokasi-document-direct?id=".$lokasi->id,
+                "sub" => 1,
+        ];
+        array_push($data, $arr);
+        $array = self::rekursifLokasi($lokasi->id, $data, 0);
+        dd($array);
+        $detail_document = DetailDocument::where("document_id",$document->id)->get();
+        $department = Department::get();
+        $lokasi = MStorage::get();
+        // return $request;
+        // $data = [
+        //     "document_id" => $document->id,
+        //     "type" => "document",
+        //     "url" => "http://localhost/digital-filling-document/public/view-document?id=".$document->id,
+        // ];
+        // $data = json_encode($data);
+        $data = url('/')."/view-document-direct?id=".$document->id;
         return view('qrcode_view_document',compact("document","detail_document","department","lokasi","data"));
     }
 
@@ -533,7 +571,7 @@ class Controller extends BaseController
                         // 'application/x-rar-compressed',
                         // 'multipart/x-rar',
                     );
-    
+
                     $name = $_FILES['edit_file']['name'][$key];
                     $checkpdf = array_search($type, $array_file);
                     if ($checkpdf != "") {
@@ -543,7 +581,7 @@ class Controller extends BaseController
                         $attachment->link = $pathpdf;
                         $attachment->filename = $name;
                     }
-    
+
                     $attachment->save();
                 }
             }
@@ -739,4 +777,45 @@ class Controller extends BaseController
         // }
     }
 
+    public function dataLokasi(Request $request)
+    {
+        $data = [];
+        $array = self::rekursifLokasi(null, $data, 0);
+        return response()->json(["data" => $array]);
+    }
+
+    public function rekursifLokasi($id, $data, $sub)
+    {
+        if($id == null){
+            $lokasi = MStorage::where("parent_id",null)->get();
+            $sub = 1;
+        }else{
+            $lokasi = MStorage::where("parent_id",$id)->get();
+            $sub = $sub + 1;
+        }
+        $data = $data;
+        foreach ($lokasi as $key => $value) {
+            # code...
+            $level = "";
+            if($value->level_storages != null){
+                $level = $value->level_storages->name;
+            }
+            $arr = [
+                "id" => $value->id,
+                "name" => $value->name,
+                "code" => $value->code,
+                "level" => $level,
+                "sequence_no" => $value->sequence_no,
+                "description" => $value->description,
+                "link" =>  url('/')."/view-lokasi-document-direct?id=".$value->id,
+                "sub" => $sub,
+            ];
+            array_push($data,$arr);
+            $child = MStorage::where("parent_id",$value->id)->get();
+            if(count($child) != 0){
+                $data = self::rekursifLokasi($value->id,$data,$sub);
+            }
+        }
+        return $data;
+    }
 }

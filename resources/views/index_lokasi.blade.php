@@ -51,7 +51,7 @@
                             {{-- <button class="btn btn-primary" type="button">SYNCH</button>
                             <button class="btn btn-primary" type="button">SEND</button> --}}
                         </div>
-						<table class="table nowrap">
+						<table class="table nowrap" id="table_lokasi">
 							<thead>
 								<tr>
                                     <th>No</th>
@@ -65,14 +65,19 @@
 									<th>Lokasi</th>
                                     <th>Code</th>
                                     <th>Tempat File</th>
+                                    <th>Sequence No</th>
                                     <th>Keterangan</th>
+                                    <th>QrCode</th>
                                     <th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
+                                {{-- @php
+                                    $no = 0;
+                                @endphp
                                 @foreach ($lokasi as $key => $value)
                                     <tr>
-                                        <td>{{$key+1}}</td>
+                                        <td>{{$no+=1}}</td>
                                         <td>{{$value->name}}</td>
                                         <td>{{$value->code}}</td>
                                         <td>{{ $value->level_storages->name }}</td>
@@ -84,13 +89,12 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                                     <a class="dropdown-item" href="edit-lokasi?id={{$value->id}}"><i class="dw dw-eye"></i> Edit</a>
-                                                    {{-- <a class="dropdown-item" href="#" id="edit_lokasi" data-id="{{ $value->id }}"><i class="dw dw-edit2"></i> Edit</a> --}}
                                                     <a class="dropdown-item" href="delete-lokasi?id={{ $value->id }}"><i class="dw dw-delete-3"></i> Delete</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
 						</table>
 					</div>
@@ -122,6 +126,12 @@
                         <label class="col-sm-12 col-md-2 col-form-label">Code</label>
                         <div class="col-sm-12 col-md-10">
                             <input class="form-control" placeholder="" type="text" name="code" value="" id="code">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Sequence No</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input class="form-control" placeholder="" type="text" name="sequence_no" value="" id="sequence_no">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -184,6 +194,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Sequence No</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input class="form-control" placeholder="" type="text" name="edit_sequence_no" value="" id="edit_sequence_no">
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-12 col-md-2 col-form-label">Keterangan</label>
                         <div class="col-sm-12 col-md-10">
                             <textarea class="form-control" name="edit_keterangan" id="edit_keterangan"></textarea>
@@ -216,24 +232,106 @@
 	<script src="src/plugins/datatables/js/vfs_fonts.js"></script>
 	<!-- Datatable Setting js -->
 	<script src="vendors/scripts/datatable-setting.js"></script></body>
+    @include("qrcode_app")
     <script type="text/javascript">
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val()
-            }
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val()
+                }
+            });
+
+            var url = "{{ url('/data-lokasi') }}";
+            var table = $('#table_lokasi').DataTable({
+                "language": {
+                    "processing": '<i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="font-size: 50px;"></i>',
+                },
+                // "dom": 'Bfrtip',
+                "ordering": false,
+                "searching": true,
+                "autoWidth": true,
+                "processing": true,
+                "serverSide": false,
+                "ajax":{
+                    "url"       : url,
+                    "dataType"  : "json",
+                    "type": "post",
+                    "data" : function ( d ){
+                                d.options = 1;
+                                }
+                },
+                "columns": [
+                    { "data": "id", className: "text-center"},
+                    { "data": "name"},
+                    { "data": "code"},
+                    { "data": "level"},
+                    { "data": "sequence_no"},
+                    { "data": "description"},
+                    { "data": "link"},
+                    { "data": "id"},
+                ],
+                "columnDefs": [
+                    {
+                        // "className" : 'dt-body-right'
+                        "render": function(data, type, row) {
+                            var html =  "<div class='dropdown'>"+
+                                            "<a class='btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle' href='#' role='button' data-toggle='dropdown'>"+
+                                            "<i class='dw dw-more'></i>"+
+                                            "</a>"+
+                                            "<div class='dropdown-menu dropdown-menu-right dropdown-menu-icon-list'>"+
+                                                "<a class='dropdown-item' href='edit-lokasi?id="+row.id+"'><i class='dw dw-eye'></i> Edit</a>"+
+                                                "<a class='dropdown-item' href='delete-lokasi?id="+row.id+"'><i class='dw dw-delete-3'></i> Delete</a>"+
+                                            "</div>"+
+                                        "</div>";
+                            return html;
+                        },
+                        "targets" : 7,
+
+                    },
+                    {
+                        // "className" : 'dt-body-right'
+                        "render": function(data, type, row) {
+                            var html = "";
+                            if (row.sub > 1) {
+                                var x = row.sub * 5;
+                                html = "<div style='margin-left:"+row.sub*x+"px'>"+row.name+"</div>";
+                                return html;
+                            }else{
+                                html = "<div style=''>"+row.name+"</div>";
+                                return html;
+                            }
+
+                        },
+                        "targets" : 1,
+
+                    },
+                    {
+                    // "className" : 'dt-body-right'
+                    "render": function(data, type, row) {
+                        var html = "";
+                        QRCode.toString(data, function (err, string) {
+                            if (err) throw err
+                            html += "<div style='width:100%;display: inline-block;margin:auto' class='qrcode-location' data-link='"+data+"' data-department='' data-lokasi_id='"+row.id+"' data-lokasi='"+row.name+"' data-sequence_no='"+row.sequence_no+"'>"+string+"</div>"
+                        })
+                        return html;
+                    },
+                    "targets" : 6,
+
+                },
+                ],
+            });
+            table.on( 'order.dt search.dt', function () {
+                table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
         });
 
         $(document).on('click', '#add_lokasi', function() {
-            // $("#index").val("");
-            // $("#no_referensi").val("");
-            // $("#catatan").val("");
             $("#ModalAddLokasi").modal('show');
         });
 
         $(document).on('click', '#edit_lokasi', function() {
-            // $("#index").val("");
-            // $("#no_referensi").val("");
-            // $("#catatan").val("");
             var id = $(this).data("id");
             $("#id_lokasi").val(id);
             var url = "{{ url('/') }}/list-lokasi";
@@ -243,13 +341,14 @@
                 url: url,
                 data: {
                     id: id
-                    // document_id: $("#document_id").val(),
                 },
                 success: function(data) {
                     $("#lokasi_edit").val(data.name);
                     $("#edit_code").val(data.code);
                     $("#edit_keterangan").val(data.description);
                     $("#edit_sumber_lokasi").val(data.sumber_lokasi);
+                    $("#sequence_no").val(data.sequence_no);
+
                 },
             });
             $("#ModalEditLokasi").modal('show');
@@ -267,7 +366,7 @@
                     code: $("#code").val(),
                     keterangan: $("#keterangan").val(),
                     sumber_lokasi: $("#sumber_lokasi").val(),
-                    // document_id: $("#document_id").val(),
+                    sequence_no : $("#sequence_no").val(),
                 },
                 beforeSend: function() {
                     // waitingDialog.show();
@@ -293,7 +392,7 @@
                     code: $("#edit_code").val(),
                     keterangan: $("#edit_keterangan").val(),
                     sumber_lokasi: $("#edit_sumber_lokasi").val(),
-                    // document_id: $("#document_id").val(),
+                    sequence_no : $("#edit_sequence_no").val(),
                 },
                 beforeSend: function() {
                     // waitingDialog.show();

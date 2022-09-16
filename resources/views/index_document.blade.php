@@ -156,7 +156,7 @@
                         var html = "";
                         QRCode.toString(data, function (err, string) {
                             if (err) throw err
-                            html += "<div style='width:100%;display: inline-block;margin:auto' class='qrcode' data-link='"+data+"' data-department='"+row[1]+"' data-nodoc='"+row[2]+"' data-lokasi='"+row[3]+"'>"+string+"</div>"
+                            html += "<div style='width:100%;display: inline-block;margin:auto' class='qrcode' data-link='"+data+"' data-department='"+row[1]+"' data-nodoc='"+row[2]+"' data-lokasi='"+row[3]+"' data-sequence_no='"+row[4]+"'>"+string+"</div>"
                         })
                         return html;
                     },

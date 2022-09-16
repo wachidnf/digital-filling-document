@@ -65,6 +65,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">Sequence No</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input class="form-control" placeholder="" type="text" name="sequence_no" value="{{ $document->sequence_no }}" id="sequence_no">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-12 col-md-2 col-form-label">Sumber Lokasi</label>
                             <div class="col-sm-12 col-md-10">
                                 <select class="custom-select col-12" name="sumber_lokasi" id="sumber_lokasi">

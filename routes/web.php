@@ -54,6 +54,7 @@ Route::get('/dashboard', function () {
     Route::post('/list-lokasi', 'Controller@listLokasi')->middleware(['auth'])->name('list-lokasi');
     Route::post('/update-lokasi', 'Controller@updateLokasi')->middleware(['auth'])->name('update-lokasi');
     Route::get('/edit-lokasi', 'Controller@editLokasi')->middleware(['auth'])->name('edit-lokasi');
+    Route::post('/data-lokasi', 'Controller@dataLokasi')->middleware(['auth'])->name('data-lokasi');
 
     Route::get('/department', 'Controller@indexDepartment')->middleware(['auth'])->name('department');
     Route::post('/save-department', 'Controller@saveDepartment')->middleware(['auth'])->name('save-department');
@@ -62,6 +63,7 @@ Route::get('/dashboard', function () {
     Route::post('/update-department', 'Controller@updateDepartment')->middleware(['auth'])->name('update-department');
 
     Route::get('/view-document-direct', 'Controller@qrcodeViewDocument')->name('qrcode-view-document');
+    Route::get('/view-lokasi-document-direct', 'Controller@qrcodeViewLokasiDocument')->name('qrcode-lokasi-view-document');
 
     Route::post('/file_attachment', 'Controller@fileAttachment')->name('file_attachment');
     Route::get('/download-file', 'Controller@downloadFile')->name('download-file');
