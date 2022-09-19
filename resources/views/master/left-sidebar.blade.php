@@ -1,8 +1,8 @@
 <div class="left-side-bar">
     <div class="brand-logo">
         <a>
-            <img src="" alt="" class="dark-logo">
-            <img src="" alt="" class="light-logo">
+            {{-- <img src="vendors/images/Si-ArDi.jpg" alt="" class="dark-logo"> --}}
+            <img src="vendors/images/Si-ArDi.jpg" style="width: 450px;height:60px" alt="" class="light-logo">
         </a>
         <div class="close-sidebar" data-toggle="left-sidebar-close">
             <i class="ion-close-round"></i>
