@@ -240,7 +240,7 @@
         </div>
         <form>
             <div class="modal-body">
-                {{-- <button class="btn btn-success" id="addRow"><i class="icon-copy fi-plus"> Tambah File</i></button> --}}
+                <button class="btn btn-success btn-sm add_filedetail" type="button"><i class="icon-copy fi-plus"> Tambah File</i></button>
                 <input id="count_file" type="hidden">
                 <div class="tab-pane table-responsive" id="tab_2">
                 <table id="file_attachment" class="table table-bordered bg-white mg-b-0 tx-center" style="font-size:15px; width: 100%; ">
@@ -319,6 +319,57 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="save_detail">SIMPAN DETAIL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalAddFileDetail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" action="{{ route('save-file-detail') }}" autocomplete="off" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">TAMBAH FILE</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        {{-- <input class="form-control" placeholder="" type="text" name="add_detail_document_id" value="" id="add_detail_document_id"> --}}
+                        <input id="detail_doc_id" name="detail_doc_id" type="hidden">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">File Lampiran</label>
+                            <div class="col-sm-12 col-md-10">
+                                <table class="table nowrap" id="table_file_detail">
+                                    <thead>
+                                        <th style="width:40%">file</th>
+                                        <th>Note</th>
+                                        <th></th>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="baris_detail">
+                                            <td>
+                                                <input class="form-control" placeholder="" type="file" name="file[]" value="" id="file">
+                                            </td>
+                                            <td>
+                                                <textarea class="form-control" name="file_note[]" id="file_note" style="height: 10%;"></textarea>
+                                            </td>
+                                            <td><button type="button" class="btn btn-danger kurang_file_detail" id="kurang_file_detail"><i class="icon-copy fi-minus"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <td colspan="2" style="text-align: center">
+                                            <button type="button" class="btn btn-success" id="tambah_file_detail"><i class="icon-copy fi-plus"> Add Row</i></button>
+                                            {{-- <button type="button" class="btn btn-danger kurang_file_detail" id="kurang_file_detail"><i class="icon-copy fi-minus"> Delete Row</i></button> --}}
+                                        </td>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="save_change">SIMPAN</button>
                     </div>
                 </form>
             </div>
@@ -440,9 +491,10 @@
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Lampiran</label>
                 <div class="col-sm-12 col-md-10">
+                    <div class="tab-pane table-responsive" id="tab_2">
                     {{-- <input class="form-control email_lampiran" placeholder="" type="mail" name="email_lampiran" value="" id="email_lampiran" required> --}}
-                    <table class="table">
-                        <thead>
+                    <table class="table" id="file_lampiran">
+                        <thead class="head_table">
                             <th>Check</th>
                             <th>Name</th>
                             <th>No Referensi</th>
@@ -463,6 +515,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -608,6 +661,49 @@
             $("#table_file").find('tr').addClass('baris');
         });
 
+        var tf = $('#table_file_detail').DataTable({
+            autoWidth: false,
+            paging:false,
+            ordering:false,
+            searching:false
+            // columnDefs: [
+            //     {
+            //         "targets": 3,
+            //         "className": "text-center",
+            //         // "width": "4%"
+            //     },
+            // ],
+        });
+        $(document).on('click', '#tambah_file_detail', function() {
+            tf.row.add( [
+                "<input class='form-control' placeholder='' type='file' name='file[]' value='' id='file'>",
+                "<textarea class='form-control' name='file_note[]' id='file_note' style='height: 10%;'></textarea>",
+                "<button type='button' class='btn btn-danger kurang_file_detail' id='kurang_file_detail'><i class='icon-copy fi-minus'></i></button>"
+            ] ).draw( false );
+            $("#table_file_detail").find('tr').addClass('baris_detail');
+        });
+
+
+        // $(document).on( 'click', '#kurang_file_detail', function () {
+        //     tf
+        //         .row( $(this).parents('tr') )
+        //         .remove()
+        //         .draw();
+        // } );
+
+        $('#table_file_detail').on('click', '.kurang_file_detail', function () {
+            var table = $('#table_file_detail').DataTable();
+            table
+                .row($(this).parents('tr'))
+                .remove()
+            .draw();
+		});
+
+        // $(document).on('click', '.kurang_file_detail', function() {
+        //     $(this).parents(".baris_detail").remove();
+        //     // $("#div_email_cc").append($('#clone_email_cc').clone().html());
+        // });
+
         // $(document).on('click', '#save_detail', function() {
         //     var url = "{{ url('/') }}/save-detail-document";
         //     $.ajax({
@@ -663,7 +759,25 @@
         };
 
         $('#file_attachment').DataTable({
-            "paging":false,
+            "paging":true,
+            "destroy": true,
+            "columns":[
+                    {data:"no",name:"no"},
+                    {data:"file",name:"file"},
+                    {data:"description",name:"description"},
+                    {data:"aksi",name:"aksi"}
+            ],
+            "order": [[ 0, 'asc' ]]
+            // "columnDefs": [
+            //     {
+            //         "targets": 1,
+            //         // "className": "text-center",
+            //     }
+            // ],
+        });
+
+        $('#file_lampiran').DataTable({
+            "paging":true,
             "destroy": true,
             "columns":[
                     {data:"no",name:"no"},
@@ -761,6 +875,7 @@
         function file(source_id,type){
             var url = "{{ url('/')}}/file_attachment";
             $('#file_attachment').DataTable().clear().draw();
+            $("#detail_doc_id").val(source_id);
             $.ajax({
                 type: 'post',
                 dataType: 'json',
@@ -822,6 +937,12 @@
                 },
             });
             $("#ModalEditDetail").modal('show');
+        });
+
+        $(document).on('click', '.add_filedetail', function() {
+            var id = $(this).data("id");
+            // $("#edit_detail_document_id").val(id);
+            $("#ModalAddFileDetail").modal('show');
         });
     </script>
 </body>

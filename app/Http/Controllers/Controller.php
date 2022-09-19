@@ -259,6 +259,57 @@ class Controller extends BaseController
         return redirect("/view-document?id=".$detail_document->document_id);
     }
 
+    public function saveFileDetail(Request $request)
+    {
+        $detail = DetailDocument::find($request->detail_doc_id);
+
+        foreach ($_FILES["file"]["error"] as $key => $error) {
+            // return $request->file('file')[$key]->getClientMimeType();
+            if ($error == 0 && $request->file_note[$key] != null) {
+                $attachment = new Attachment;
+                $attachment->source_id = $detail->id;
+                $attachment->type = "detail document";
+                $uploadedFile = $request->file('file')[$key];
+                $type = $uploadedFile->getClientMimeType();
+                $array_file = array(
+                    "application/msword",
+                    "application/pdf",
+                    "image/jpeg",
+                    "image/pjpeg",
+                    "image/png",
+                    "application/excel",
+                    "application/vnd.ms-excel",
+                    "application/x-excel",
+                    "application/x-msexcel",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    // 'application/zip',
+                    // 'application/x-zip-compressed',
+                    // 'multipart/x-zip',
+                    // 'application/x-compressed',
+                    // 'application/rar',
+                    // 'application/x-rar-compressed',
+                    // 'multipart/x-rar',
+                );
+
+                $name = $_FILES['file']['name'][$key];
+                $checkpdf = array_search($type, $array_file);
+                if ($checkpdf != "") {
+                    $pathpdf = Storage::put('detail_document/'.$detail->id, $uploadedFile);
+                    $new_file_name = explode("/", $pathpdf);
+                    $tmp_name = $_FILES['file']['tmp_name'][$key];
+                    $attachment->link = $pathpdf;
+                    $attachment->description = $request->file_note[$key];
+                    $attachment->filename = $name;
+                }
+
+                $attachment->save();
+            }
+        }
+
+        return redirect("/view-document?id=".$detail->document_id);
+    }
+
     public function indexMedia(Request $request)
     {
         $user = \Auth::user();

@@ -70,6 +70,7 @@ Route::get('/dashboard', function () {
     Route::post('/delete-file', 'Controller@deleteFile')->name('delete-file');
     Route::post('/edit-file', 'Controller@editFile')->name('edit-file');
     Route::post('/update-file-document', 'Controller@updateFile')->name('update-file-document');
+    Route::post('/save-file-detail', 'Controller@saveFileDetail')->name('save-file-detail');
 
     Route::get('/user', 'Controller@indexUser')->middleware(['auth'])->name('user');
     Route::post('/save-user', 'Controller@saveUser')->middleware(['auth'])->name('save-user');
