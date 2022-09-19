@@ -30,18 +30,18 @@
 		gtag('config', 'UA-119386393-1');
 	</script>
 </head>
-{{-- <div class="pre-loader">
+<div class="pre-loader">
     <div class="pre-loader-box">
-        <div class="loader-logo"><img src="vendors/images/deskapp-logo.svg" alt=""></div>
+        <div class="loader-logo"><img src='vendors/images/logo-ciputra.png' style="width:200px;height:150px" alt=""></div>
         <div class='loader-progress' id="progress_div">
             <div class='bar' id='bar1'></div>
         </div>
         <div class='percent' id='percent1'>0%</div>
         <div class="loading-text">
-            Loading...
+            Tunggu ya... &#127773;
         </div>
     </div>
-</div> --}}
+</div>
 <div class="header">
     <div class="header-left">
         {{-- <div class="menu-icon dw dw-menu"></div>
