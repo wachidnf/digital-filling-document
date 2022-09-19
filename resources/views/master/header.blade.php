@@ -32,7 +32,7 @@
 </head>
 <div class="pre-loader">
     <div class="pre-loader-box">
-        <div class="loader-logo"><img src='vendors/images/logo-ciputra.png' style="width:200px;height:150px" alt=""></div>
+        <div class="loader-logo"><img src='vendors/images/Si-ArDi.jpg' style="width:200px;height:100px" alt=""></div>
         <div class='loader-progress' id="progress_div">
             <div class='bar' id='bar1'></div>
         </div>
