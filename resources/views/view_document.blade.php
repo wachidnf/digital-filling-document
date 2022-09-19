@@ -793,7 +793,7 @@
             //     }
             // ],
         });
-        
+
         // var t = $('#file_attachment').DataTable({
         //         autoWidth: false,
         //         paging:false,
@@ -809,7 +809,7 @@
         //         // },
         //         ],
         // });
-        
+
         // $('#addRow').on( 'click', function () {
         //     t.row.add( [
         //         null,

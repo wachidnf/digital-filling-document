@@ -139,7 +139,7 @@
                                     <th>Name</th>
 									<th>No Referensi</th>
 									<th>Catatan</th>
-                                    {{-- <th>Action</th> --}}
+                                    <th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -148,15 +148,16 @@
                                         <td>{{$value->name}}</td>
                                         <td>{{$value->reference_no}}</td>
                                         <td>{{$value->notes}}</td>
-                                        {{-- <td>
+                                        <td>
                                             <div class="dropdown">
                                                 <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                                                     <i class="dw dw-more"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                                    <a class="dropdown-item"  onclick="file('{{$value->id}}','detail document')">File</a>
                                                 </div>
                                             </div>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -205,11 +206,53 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="ModalFile" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true" style="overflow-y:auto;padding-top: 100px;">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 class="modal-title" id="myModalLabel"><span style="color: grey" id="modalfiletitle"></span></h3>
+        </div>
+        <form>
+            <div class="modal-body">
+                {{-- <button class="btn btn-success" id="addRow"><i class="icon-copy fi-plus"> Tambah File</i></button> --}}
+                <input id="count_file" type="hidden">
+                <div class="tab-pane table-responsive" id="tab_2">
+                <table id="file_attachment" class="table table-bordered bg-white mg-b-0 tx-center" style="font-size:15px; width: 100%; ">
+                    <thead class="head_table">
+                    <tr style="border: 1px solid black;">
+                        <td rowspan="" style="vertical-align: middle;text-align: center">No</td>
+                        <td rowspan="" style="vertical-align: middle;text-align: center">File Lampiran</td>
+                        <td rowspan="" style="vertical-align: middle;text-align: center">Note</td>
+                        {{-- <td rowspan="" style="vertical-align: middle;text-align: center">Action</td> --}}
+                    </tr>
+                    </thead>
+                </table>
+                </div>
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
 	<!-- js -->
 	<script src="vendors/scripts/core.js"></script>
 	<script src="vendors/scripts/script.min.js"></script>
 	<script src="vendors/scripts/process.js"></script>
 	<script src="vendors/scripts/layout-settings.js"></script>
+    <script src="src/plugins/datatables/js/jquery.dataTables.min.js"></script>
+	<script src="src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+	<script src="src/plugins/datatables/js/dataTables.responsive.min.js"></script>
+	<script src="src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+	<!-- buttons for Export datatable -->
+	<script src="src/plugins/datatables/js/dataTables.buttons.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.bootstrap4.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.print.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.html5.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.flash.min.js"></script>
+	<script src="src/plugins/datatables/js/pdfmake.min.js"></script>
+	<script src="src/plugins/datatables/js/vfs_fonts.js"></script>
+
     <script src="{{ url('/') }}/qrcode/build/qrcode.js"></script>
     <script src="{{ url('/') }}/qrcode/build/qrcode.min.js"></script>
     <script src="{{ url('/') }}/qrcode/build/qrcode.tosjis.js"></script>
@@ -282,6 +325,47 @@
 
             //     // return true;
         };
+
+        function file(source_id,type){
+            var url = "{{ url('/')}}/file_attachment";
+            $('#file_attachment').DataTable().clear().draw();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: url,
+                data: {
+                    source_id : source_id,
+                    type : type,
+                },
+                // beforeSend: function() {
+                //     waitingDialog.show();
+                // },
+                success: function(data) {
+                    if (data.file.length > 0) {
+                    // console.log(data);
+                        $(data.file).each(function(i, v) {
+                        // console.log(v.status);
+                            var ItemTable = {
+                                no: i+1,
+                                file: v.file,
+                                description: v.description,
+                                // aksi: v.aksi,
+                                cek: v.cek
+                            };
+                            $('#file_attachment').DataTable().row.add(ItemTable);
+                        });
+                        $("#count_file").val(data.file.length);
+                    }
+                    // $('#modalfiletitle').text("File Lampiran");
+                    $('#file_attachment').DataTable().draw();
+                    // $('#index_detail').DataTable().columns.adjust();
+                },
+                // complete: function() {
+                //     waitingDialog.hide();
+                // }
+            });
+            $("#ModalFile").modal('show');
+        }
     </script>
 </body>
 </html>

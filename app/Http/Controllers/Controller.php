@@ -499,20 +499,26 @@ class Controller extends BaseController
             }
         $arr = [
             "id" => $lokasi->id,
-                "name" => $lokasi->name,
-                "code" => $lokasi->code,
-                "level" => $level,
-                "sequence_no" => $lokasi->sequence_no,
-                "description" => $lokasi->description,
-                "link" =>  url('/')."/view-lokasi-document-direct?id=".$lokasi->id,
-                "sub" => 1,
+            "name" => $lokasi->name,
+            "code" => $lokasi->code,
+            "level" => $level,
+            "sequence_no" => $lokasi->sequence_no,
+            "description" => $lokasi->description,
+            "link" =>  url('/')."/view-lokasi-document-direct?id=".$lokasi->id,
+            "sub" => 1,
         ];
         array_push($data, $arr);
         $array = self::rekursifLokasi($lokasi->id, $data, 0);
-        dd($array);
-        $detail_document = DetailDocument::where("document_id",$document->id)->get();
-        $department = Department::get();
-        $lokasi = MStorage::get();
+        $array_lokasi_id = [];
+        foreach ($array as $key => $value) {
+            # code...
+            array_push($array_lokasi_id, $value["id"]);
+        }
+        // dd($array_lokasi_id);
+        $document = Document::whereIn("storage_id",$array_lokasi_id)->get();
+        // dd($document);
+        // $department = Department::get();
+        // $lokasi = MStorage::get();
         // return $request;
         // $data = [
         //     "document_id" => $document->id,
@@ -520,8 +526,8 @@ class Controller extends BaseController
         //     "url" => "http://localhost/digital-filling-document/public/view-document?id=".$document->id,
         // ];
         // $data = json_encode($data);
-        $data = url('/')."/view-document-direct?id=".$document->id;
-        return view('qrcode_view_document',compact("document","detail_document","department","lokasi","data"));
+        // $data = url('/')."/view-document-direct?id=".$document->id;
+        return view('qrcode_view_lokasi_document',compact("document"));
     }
 
     public function fileAttachment(Request $request){

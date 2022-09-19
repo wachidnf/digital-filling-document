@@ -50,6 +50,7 @@
                             <button class="btn btn-primary" type="button">DELETE</button> --}}
                             {{-- <button class="btn btn-primary" type="button">SYNCH</button>
                             <button class="btn btn-primary" type="button">SEND</button> --}}
+                            <button class="btn btn-primary" type="button" id="cetak_qrcode" >Cetak QrCode</button>
                         </div>
 						<table class="table nowrap" id="index_document" style="width: 100%">
 							<thead style="width: 100%">
@@ -108,6 +109,48 @@
 			</div>
 		</div>
 	</div>
+
+    <div class="modal fade" id="ModalCetakQrAll" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true" style="overflow-y:auto;padding-top: 100px;">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 class="modal-title" id="myModalLabel"><span style="color: grey" id="modalfiletitle"></span></h3>
+        </div>
+        <form>
+            <div class="modal-body">
+                <div class="form-group col-md-12">
+                    <button class="btn btn-success btn-sm cetak_qrcode_document" type="button" id="cetak_qrcode_document"><i class="icon-copy fi-print"> Cetak QrCode</i></button>
+                </div>
+                <div class="tab-pane table-responsive" id="tab_2">
+                    <table id="document_qrcode" class="table table-bordered bg-white mg-b-0 tx-center" style="font-size:15px; width: 100%; ">
+                        <thead class="head_table">
+                            <tr style="border: 1px solid black;">
+                                <th><input type="checkbox" id="check_all_qr"></th>
+                                <th>No Document</th>
+                                <th>Lokasi</th>
+                                <th>Seq Number</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($document as $key => $value)
+                                <tr>
+                                    <td><input type="checkbox" class="check_select_qr" value="{{$value->id}}" data-lokasi="{{$value->lokasi->name}}" data-department="{{$value->department->name}}" data-sec_number="{{$value->seq_no}}" data-link="{{ url('/') }}/view-document-direct?id={{$value->id}}"></td>
+                                    <td>{{$value->document_no}}</td>
+                                    <td>{{ $value->lokasi->level_storages->name  }} - {{$value->lokasi->name}}</td>
+                                    <td>{{$value->seq_no}}</td>
+                                    <td>{{$value->description}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
 	<!-- js -->
 	<script src="vendors/scripts/core.js"></script>
 	<script src="vendors/scripts/script.min.js"></script>
@@ -164,6 +207,16 @@
 
                 },
             ],
+        });
+
+        var table_document_qrcode = $('#document_qrcode').DataTable({
+            "language": {
+                "processing": '<i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="font-size: 50px;"></i>',
+            },
+        });
+
+        $(document).on('click', '#cetak_qrcode', function() {
+            $("#ModalCetakQrAll").modal('show');
         });
 
         // $(document).on('click', '.qrcode', function() {
