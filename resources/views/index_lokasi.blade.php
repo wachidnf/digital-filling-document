@@ -43,7 +43,7 @@
 					<div class="pd-20">
 						<h4 class="text-blue h4">LOKASI</h4>
 					</div>
-					<div class="pb-20">
+					<div class="pb-20 table-responsive">
                         <div class="btn-list">
                             <button class="btn btn-primary" type="button" id="add_lokasi">ADD LOKASI</button>
                             {{-- <button class="btn btn-primary" type="button">EDIT</button>
