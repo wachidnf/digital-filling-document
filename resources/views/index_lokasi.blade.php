@@ -52,7 +52,7 @@
                             <button class="btn btn-primary" type="button">SEND</button> --}}
                             <button class="btn btn-primary" type="button" id="cetak_qrcode" >Cetak QrCode</button>
                         </div>
-						<table class="table nowrap" id="table_lokasi">
+						<table class="table nowrap" id="table_lokasi" style="width: 100%">
 							<thead>
 								<tr>
                                     <th>No</th>
