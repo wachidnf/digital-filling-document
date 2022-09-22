@@ -780,6 +780,7 @@
             "paging":true,
             "destroy": true,
             "columns":[
+                    {data:"id"},
                     {data:"no",name:"no"},
                     {data:"file",name:"file"},
                     {data:"description",name:"description"},
