@@ -18,7 +18,7 @@
 					<div class="pd-20">
 						<h4 class="text-blue h4">TRANSAKSI DOKUMEN</h4>
 					</div>
-					<div class="pb-20">
+					<div class="pb-20 table-responsive">
                         <div class="btn-list">
                             {{-- <a class="btn btn-primary" type="button" href="create-document">ADD</a> --}}
                             {{-- <button class="btn btn-primary" type="button">EDIT</button>
