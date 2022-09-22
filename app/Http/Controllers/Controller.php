@@ -98,7 +98,8 @@ class Controller extends BaseController
         $project    = Project::find($request->project);
         $pt         = Pt::find($request->pt);
         // 0136/TENDER/CD/VI/2022/CGSDJ/CFAT
-        $no = (count($document_lama)+1).'/'.'DOC'.'/'.$department->code.'/'.$bulan.'/'.$tahun .'/'.$project->code.'/'.$pt->code;
+        // $no = (count($document_lama)+1).'/'.'DOC'.'/'.$department->code.'/'.$bulan.'/'.$tahun .'/'.$project->code.'/'.$pt->code;
+        $no = (count($document_lama)+1).'/'.'DOC'.'/'.$department->code.'/'.$bulan.'/'.$tahun;
 
         $document = new Document;
         $document->process_date = $request->tgl_process;
