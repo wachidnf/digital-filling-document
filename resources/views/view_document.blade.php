@@ -619,7 +619,7 @@
                     document_id : $("#document_id").val(),
                     array_to : array_to,
                     array_cc : array_cc,
-                    body_mail : CKEDITOR.instances.email_body.getData(),
+                    // body_mail : CKEDITOR.instances.email_body.getData(),
                     array_file : array_file,
                 },
                 // beforeSend: function() {
