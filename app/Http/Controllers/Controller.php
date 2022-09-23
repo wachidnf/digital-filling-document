@@ -799,7 +799,7 @@ class Controller extends BaseController
             }
 
             if($data['email_cc'][0] != null){
-                Mail::send('bodyEmailDocument', ['ematil_to' => $data['email_to'], 'doc_no' => $document->document_no, 'pt_name' => $document->pt->name], function($message)use($data, $dataFile) {
+                Mail::send('bodyEmailDocument', ['email_to' => $data['email_to'], 'doc_no' => $document->document_no, 'pt_name' => $document->pt->name], function($message)use($data, $dataFile) {
                     $message->from(env('MAIL_USERNAME'))->to($data['email_to'])->cc($data['email_cc'])->subject($data['subject']);
 
                     foreach ($dataFile as $key => $result){
@@ -814,7 +814,7 @@ class Controller extends BaseController
                     }
                 });
             }else{
-                Mail::send('bodyEmailDocument', ['ematil_to' => $data['email_to'], 'doc_no' => $document->document_no, 'pt_name' => $document->pt->name], function($message)use($data, $dataFile) {
+                Mail::send('bodyEmailDocument', ['email_to' => $data['email_to'], 'doc_no' => $document->document_no, 'pt_name' => $document->pt->name], function($message)use($data, $dataFile) {
                     $message->from(env('MAIL_USERNAME'))->to($data['email_to'])->subject($data['subject']);
 
                     foreach ($dataFile as $key => $result){
