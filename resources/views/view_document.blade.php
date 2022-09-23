@@ -482,12 +482,12 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Body Email</label>
                 <div class="col-sm-12 col-md-10">
                     <input class="form-control email_body" placeholder="" type="text" name="email_body" value="" id="email_body" required>
                 </div>
-            </div>
+            </div> --}}
             <div class="form-group row">
                 <label class="col-sm-12 col-md-2 col-form-label">Lampiran</label>
                 <div class="col-sm-12 col-md-10">
