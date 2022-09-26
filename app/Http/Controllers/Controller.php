@@ -55,8 +55,23 @@ class Controller extends BaseController
     public function createDocument(Request $request)
     {
         // $document = Document::all();
-        $department = Department::get();
-        $lokasi = MStorage::get();
+        $user = \Auth::user();
+        $department = [];
+        foreach ($user->detail as $key => $value) {
+            # code...
+            // array_push($project, $value->project_id);
+            array_push($pt, $value->pt_id);
+            array_push($department, $value->department_id);
+        }
+        if($user->level == "admin"){
+            $document = Document::get();
+            $department = Department::get();
+            $lokasi = MStorage::get();
+        }else{
+            // $document = Document::whereIn("department_id",$department)->get
+            $department = Department::whereIn("id",$department)->get();
+            $lokasi = MStorage::whereIn("department_id",$department)->get();
+        }
         $project = Project::get();
         $pt = Pt::get();
         return view('create_document',compact("department","lokasi","project","pt"));
@@ -65,9 +80,26 @@ class Controller extends BaseController
     public function editDocument(Request $request)
     {
         // $document = Document::all();
+        $user = \Auth::user();
+        $department = [];
+        foreach ($user->detail as $key => $value) {
+            # code...
+            // array_push($project, $value->project_id);
+            array_push($pt, $value->pt_id);
+            array_push($department, $value->department_id);
+        }
+        if($user->level == "admin"){
+            $document = Document::get();
+            $department = Department::get();
+            $lokasi = MStorage::get();
+        }else{
+            // $document = Document::whereIn("department_id",$department)->get
+            $department = Department::whereIn("id",$department)->get();
+            $lokasi = MStorage::whereIn("department_id",$department)->get();
+        }
         $document = Document::find($request->id);
-        $department = Department::get();
-        $lokasi = MStorage::get();
+        // $department = Department::get();
+        // $lokasi = MStorage::get();
         $project = Project::get();
         $pt = Pt::get();
         return view('edit_document',compact("department","lokasi","document","project","pt"));
@@ -359,17 +391,48 @@ class Controller extends BaseController
     public function indexLokasi(Request $request)
     {
         $user = \Auth::user();
-        $lokasi = MStorage::get();
+        $department = [];
+        foreach ($user->detail as $key => $value) {
+            # code...
+            // array_push($project, $value->project_id);
+            array_push($pt, $value->pt_id);
+            array_push($department, $value->department_id);
+        }
+        if($user->level == "admin"){
+            $department = Department::get();
+            $lokasi = MStorage::get();
+        }else{
+            $department = Department::whereIn("id",$department)->get();
+            $lokasi = MStorage::whereIn("department_id",$department)->get();
+            // $document = Document::whereIn("department_id",$department)->get();
+        }
+        // $lokasi = MStorage::get();
         $level = LevelStorage::get();
-        return view('index_lokasi',compact("lokasi", "level"));
+        return view('index_lokasi',compact("lokasi", "level","department"));
     }
 
     public function editLokasi(Request $request)
     {
+        $user = \Auth::user();
+        $department = [];
+        foreach ($user->detail as $key => $value) {
+            # code...
+            // array_push($project, $value->project_id);
+            array_push($pt, $value->pt_id);
+            array_push($department, $value->department_id);
+        }
+        if($user->level == "admin"){
+            $department = Department::get();
+            // $lokasi = MStorage::get();
+        }else{
+            $department = Department::whereIn("id",$department)->get();
+            // $lokasi = MStorage::whereIn("department_id",$department)->get();
+            // $document = Document::whereIn("department_id",$department)->get();
+        }
         $document = MStorage::find($request->id);
         $level = LevelStorage::get();
         $lokasi = MStorage::where("id","!=",$document->id)->get();
-        return view('edit_lokasi',compact("document", "level", "lokasi"));
+        return view('edit_lokasi',compact("document", "level", "lokasi","department"));
     }
 
     public function saveLokasi(Request $request)
@@ -383,6 +446,7 @@ class Controller extends BaseController
         $document->sequence_no = $request->sequence_no;
         $document->description = $request->keterangan;
         $document->parent_id = $request->sumber_lokasi;
+        $document->department_id = $request->department;
         $document->save();
 
         return response()->json(['status'=>1]);
@@ -399,6 +463,7 @@ class Controller extends BaseController
         $storage->sequence_no = $request->sequence_no;
         $storage->description = $request->keterangan;
         $storage->parent_id = $request->sumber_lokasi;
+        $storage->department_id = $request->department;
         $storage->save();
 
         // return response()->json(['status'=>1]);
@@ -414,6 +479,7 @@ class Controller extends BaseController
         $data['sequence_no']    = $storage->sequence_no;
         $data['description']    = $storage->description;
         $data['sumber_lokasi']  = $storage->parent_id;
+        $data['department']     = $storage->department_id;
         return response()->json($data);
     }
 
@@ -858,6 +924,10 @@ class Controller extends BaseController
             if($value->level_storages != null){
                 $level = $value->level_storages->name;
             }
+            $department = "";
+            if($value->department != null){
+                $department = $value->department->name;
+            }
             $arr = [
                 "id" => $value->id,
                 "name" => $value->name,
@@ -867,6 +937,7 @@ class Controller extends BaseController
                 "description" => $value->description,
                 "link" =>  url('/')."/view-lokasi-document-direct?id=".$value->id,
                 "sub" => $sub,
+                "department" => $department,
             ];
             array_push($data,$arr);
             $child = MStorage::where("parent_id",$value->id)->get();

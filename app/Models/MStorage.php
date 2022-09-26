@@ -16,6 +16,12 @@ class MStorage extends Model
         return $this->belongsTo('App\Models\LevelStorage', 'level', 'id');
     }
 
+    public function department()
+    {
+        return $this->belongsTo('App\Models\Department');
+    }
+
+
     public function parent()
     {
         return $this->belongsTo('App\Models\MStorage', 'parent_id', 'id');

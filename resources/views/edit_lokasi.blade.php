@@ -65,6 +65,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 col-form-label">Department</label>
+                            <div class="col-sm-12 col-md-10">
+                                <select class="custom-select col-12" name="department" id="department">
+                                    <option disabled selected>Pilih Department...</option>
+                                    @foreach ($department as $key => $value)
+                                        <option value="{{$value->id}}" {{ $document->department_id == $value->id ? 'selected' : '' }}>{{$value->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-12 col-md-2 col-form-label">Sequence No</label>
                             <div class="col-sm-12 col-md-10">
                                 <input class="form-control" placeholder="" type="text" name="sequence_no" value="{{ $document->sequence_no }}" id="sequence_no">

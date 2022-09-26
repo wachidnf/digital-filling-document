@@ -65,6 +65,7 @@
 									{{-- <th>Department</th> --}}
 									<th>Lokasi</th>
                                     <th>Code</th>
+                                    <th>Department</th>
                                     <th>Tempat File</th>
                                     <th>Sequence No</th>
                                     <th>Keterangan</th>
@@ -110,6 +111,17 @@
                         <label class="col-sm-12 col-md-2 col-form-label">Sequence No</label>
                         <div class="col-sm-12 col-md-10">
                             <input class="form-control" placeholder="" type="text" name="sequence_no" value="" id="sequence_no">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Department</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select class="custom-select col-12" name="department" id="department">
+                                <option disabled selected>Pilih Department...</option>
+                                @foreach ($department as $key => $value)
+                                    <option value="{{$value->id}}">{{$value->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -288,6 +300,7 @@
                     { "data": "id", className: "text-center"},
                     { "data": "name"},
                     { "data": "code"},
+                    { "data": "department"},
                     { "data": "level"},
                     { "data": "sequence_no"},
                     { "data": "description"},
@@ -309,7 +322,7 @@
                                         "</div>";
                             return html;
                         },
-                        "targets" : 7,
+                        "targets" : 8,
 
                     },
                     {
@@ -339,7 +352,7 @@
                         })
                         return html;
                     },
-                    "targets" : 6,
+                    "targets" : 7,
 
                 },
                 ],
@@ -411,7 +424,8 @@
                     $("#edit_code").val(data.code);
                     $("#edit_keterangan").val(data.description);
                     $("#edit_sumber_lokasi").val(data.sumber_lokasi);
-                    $("#sequence_no").val(data.sequence_no);
+                    $("#edit_sequence_no").val(data.sequence_no);
+                    $("#edit_department").val(data.department);
 
                 },
             });
@@ -431,6 +445,7 @@
                     keterangan: $("#keterangan").val(),
                     sumber_lokasi: $("#sumber_lokasi").val(),
                     sequence_no : $("#sequence_no").val(),
+                    department : $("#department").val(),
                 },
                 beforeSend: function() {
                     // waitingDialog.show();
@@ -457,6 +472,7 @@
                     keterangan: $("#edit_keterangan").val(),
                     sumber_lokasi: $("#edit_sumber_lokasi").val(),
                     sequence_no : $("#edit_sequence_no").val(),
+                    department : $("#edit_department").val(),
                 },
                 beforeSend: function() {
                     // waitingDialog.show();
