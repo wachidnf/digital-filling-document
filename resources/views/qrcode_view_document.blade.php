@@ -216,7 +216,7 @@
         </div>
         <form>
             <div class="modal-body">
-                {{-- <button class="btn btn-success" id="addRow"><i class="icon-copy fi-plus"> Tambah File</i></button> --}}
+                <button class="btn btn-success btn-sm add_filedetail" type="button"><i class="icon-copy fi-plus"> Tambah File</i></button>
                 <input id="count_file" type="hidden">
                 <div class="tab-pane table-responsive" id="tab_2">
                 <table id="file_attachment" class="table table-bordered bg-white mg-b-0 tx-center" style="font-size:15px; width: 100%; ">
@@ -225,7 +225,7 @@
                         <td rowspan="" style="vertical-align: middle;text-align: center">No</td>
                         <td rowspan="" style="vertical-align: middle;text-align: center">File Lampiran</td>
                         <td rowspan="" style="vertical-align: middle;text-align: center">Note</td>
-                        {{-- <td rowspan="" style="vertical-align: middle;text-align: center">Action</td> --}}
+                        <td rowspan="" style="vertical-align: middle;text-align: center">Action</td>
                     </tr>
                     </thead>
                 </table>
@@ -329,6 +329,7 @@
         function file(source_id,type){
             var url = "{{ url('/')}}/file_attachment";
             $('#file_attachment').DataTable().clear().draw();
+            $("#detail_doc_id").val(source_id);
             $.ajax({
                 type: 'post',
                 dataType: 'json',
@@ -349,8 +350,8 @@
                                 no: i+1,
                                 file: v.file,
                                 description: v.description,
-                                // aksi: v.aksi,
-                                // cek: v.cek
+                                aksi: v.aksi,
+                                cek: v.cek
                             };
                             $('#file_attachment').DataTable().row.add(ItemTable);
                         });
