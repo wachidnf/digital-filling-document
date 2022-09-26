@@ -350,7 +350,7 @@
                                 file: v.file,
                                 description: v.description,
                                 // aksi: v.aksi,
-                                cek: v.cek
+                                // cek: v.cek
                             };
                             $('#file_attachment').DataTable().row.add(ItemTable);
                         });
