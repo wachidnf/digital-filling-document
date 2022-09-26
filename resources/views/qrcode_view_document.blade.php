@@ -326,6 +326,24 @@
             //     // return true;
         };
 
+        $('#file_attachment').DataTable({
+            "paging":true,
+            "destroy": true,
+            "columns":[
+                    {data:"no",name:"no"},
+                    {data:"file",name:"file"},
+                    {data:"description",name:"description"},
+                    {data:"aksi",name:"aksi"}
+            ],
+            "order": [[ 0, 'asc' ]]
+            // "columnDefs": [
+            //     {
+            //         "targets": 1,
+            //         // "className": "text-center",
+            //     }
+            // ],
+        });
+
         function file(source_id,type){
             var url = "{{ url('/')}}/file_attachment";
             $('#file_attachment').DataTable().clear().draw();
