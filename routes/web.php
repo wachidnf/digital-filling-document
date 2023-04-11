@@ -25,7 +25,6 @@ Route::get('/login', function () {
 //     return view('dashboard');
 // })->middleware(['auth'])->name('dashboard');
 Route::get('/dashboard', function () {
-    // return view('index3');
     return redirect("document");
 })->middleware(['auth'])->name('dashboard');
 
